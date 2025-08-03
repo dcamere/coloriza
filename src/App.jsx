@@ -154,13 +154,13 @@ function AppContent() {
             window.location.reload()
           }}
         >
-          <span className="title">¡Envío exitoso!</span>
+          <span style={{color: '#FF8A00', fontSize: '26px'}} className="title">Datos enviados con éxito</span>
           <p>
-            Tu solicitud ha sido recibida, te contactaremos por correo y
-            whatsApp
+            Gracias por querer mejorar tu barrio a través del arte urbano,  te contactaremos por correo y whatsapp.
           </p>
-          <a className="button forward" href="https://vertices.pro/">
-            Conoce más
+          <img src="/modal-success.png" alt="" />
+          <a style={{fontSize: '24px'}} className="button forward" href="/">
+            Volver al inicio
           </a>
         </Modal>
 
