@@ -3,6 +3,9 @@ import * as Yup from 'yup'
 // Regex para teléfono peruano (9 dígitos que empiecen con 9)
 const peruPhoneRegex = /^9\d{8}$/
 
+// Regex para email más estricta que requiere dominio válido
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+
 const validators = [
   // Paso 0: Medidas (Step4)
   {
@@ -53,7 +56,7 @@ const validators = [
     email: Yup.string()
       .test('email-format', 'Debe ser un email válido', function(value) {
         if (!value || value.length === 0) return true; // Es opcional
-        return Yup.string().email().isValidSync(value);
+        return emailRegex.test(value);
       })
   },
 ]
