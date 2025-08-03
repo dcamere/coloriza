@@ -1,0 +1,36 @@
+.custom-input {
+  background: white;
+  color: black;
+  text-align: left;
+  padding: 16px 16px 24px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  box-sizing: border-box;
+  border: 4px transparent solid;
+  transition: all 0.2s;
+  backface-visibility: hidden;
+}
+.custom-input input {
+  opacity: 0;
+  visibility: hidden;
+}
+.custom-input--checked {
+  border: 4px #2abc05 solid;
+}
+.custom-input:hover {
+  transform: scale(1.005);
+}
+.custom-input img {
+  backface-visibility: hidden;
+  width: 100%;
+}
+.custom-input--error {
+  border: 4px red solid;
+}
+@media (min-width: 768px) {
+  .custom-input {
+    /* width: 384px; */
+    margin-bottom: 0px;
+  }
+}/*# sourceMappingURL=CustomInput.css.map */

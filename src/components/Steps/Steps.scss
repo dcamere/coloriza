@@ -1,0 +1,111 @@
+@import '../../variables.scss';
+$topSpace: 60px;
+
+:root {
+  --progress-value: 0%;
+}
+
+.steps {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: $nunito;
+  max-width: 980px;
+  margin: auto;
+
+  @media only screen and (min-width: 768px) {
+    font-size: 12px;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    height: 4px;
+    background-color: $gray;
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    top: 4px;
+    z-index: 0;
+    @media only screen and (min-width: 768px) {
+      height: 6px;
+      top: 9px;
+    }
+  }
+
+  &::after {
+    background-color: $black1;
+    transition: width 450ms ease-in-out;
+    width: var(--progress-value);
+    max-width: 100%;
+    z-index: 1;
+    border-radius: 12px;
+    left: 0;
+    right: 0;
+  }
+
+  &__step {
+    color: $black1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    flex: 1 1;
+    z-index: 2;
+    @media only screen and (min-width: 768px) {
+      gap: 16px;
+    }
+
+    span {
+      max-height: 20px;
+      overflow: hidden;
+      @media only screen and (min-width: 375px) {
+        max-height: inherit;
+      }
+    }
+
+    &:first-child {
+      align-items: flex-start;
+      text-align: left;
+      flex-grow: 0.5;
+    }
+
+    &:last-child {
+      align-items: flex-end;
+      text-align: right;
+      flex-grow: 0.5;
+    }
+
+    &::before {
+      content: '';
+      height: 12px;
+      width: 12px;
+      border-radius: 50%;
+      border: 3px $gray solid;
+      transition: border 250ms 450ms ease-in-out,
+        background-color 250ms 450ms ease-in-out;
+      background-color: $gray;
+      @media only screen and (min-width: 768px) {
+        height: 24px;
+        width: 24px;
+        border: 12px $gray solid;
+      }
+    }
+
+    &.is-complete {
+      font-weight: 800;
+
+      &::before {
+        content: '';
+        border: 3px $black2 solid;
+        background-color: white;
+        @media only screen and (min-width: 768px) {
+          border-width: 5px;
+        }
+      }
+    }
+  }
+}

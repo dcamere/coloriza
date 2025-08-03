@@ -1,0 +1,99 @@
+.button {
+  border-radius: 8px;
+  width: 204px;
+  height: 64px;
+  border: none;
+  padding: 16px 24px 16px 24px;
+  position: relative;
+  font-size: 24px;
+  font-weight: 900;
+  cursor: pointer;
+  background-color: #2abc05;
+  color: white;
+  font-family: "Lato", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.button:disabled {
+  background-color: #ededed;
+  color: #bdbdbd;
+  pointer-events: none;
+}
+.button.is-loading {
+  pointer-events: none;
+}
+.button.is-loading * {
+  display: none;
+}
+.button.is-loading::after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  border: 2px solid white;
+  border-radius: 8px;
+  border-bottom: 2px solid transparent;
+  animation: rotating 450ms linear infinite;
+}
+
+.back {
+  background-color: #ededed;
+  color: #191919;
+}
+.back:hover {
+  border: 1px solid #191919;
+}
+@media (max-width: 450px) {
+  .back:hover {
+    border: none;
+  }
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.forward:hover {
+  background-color: #1e9500;
+}
+@media (max-width: 450px) {
+  .forward:hover {
+    background-color: #2abc05;
+  }
+}
+
+@media (max-width: 768px) {
+  .button {
+    width: 144px;
+    height: 40px;
+    font-size: 16px;
+    padding: 16px 16px 16px 16px;
+  }
+  .back {
+    width: 119px;
+  }
+}
+@keyframes rotating {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.button:disabled {
+  background-color: #ededed;
+  color: #bdbdbd;
+  pointer-events: none;
+}
+
+.button-label {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+@media (min-width: 450px) {
+  .button-label {
+    gap: 24px;
+  }
+}/*# sourceMappingURL=Button.css.map */

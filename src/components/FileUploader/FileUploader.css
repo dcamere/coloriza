@@ -1,0 +1,65 @@
+.file-uploader {
+  background: white;
+  border-radius: 8px;
+  padding: 12px 20px;
+  gap: 10px;
+  font-size: 16px;
+  font-family: "Lato", sans-serif;
+  line-height: 19.2px;
+  font-weight: 700;
+  color: black;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: space-between;
+}
+.file-uploader input {
+  visibility: hidden;
+  height: 0;
+  width: 0;
+  pointer-events: none;
+  position: absolute;
+}
+.file-uploader svg {
+  font-size: 24px;
+  width: auto;
+}
+
+.single-file {
+  display: flex;
+  align-items: center;
+  font-family: "Lato", sans-serif;
+  justify-content: space-between;
+}
+.single-file img {
+  margin-right: 8px;
+  height: 30px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  width: auto;
+}
+.single-file span {
+  font-size: 12px;
+  text-align: left;
+  width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.single-file__close {
+  cursor: pointer;
+  margin-left: 24px;
+  flex: 0 0 24px;
+}
+.single-file__close svg {
+  font-size: 24px;
+}
+
+.selected-files {
+  width: 180px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+}/*# sourceMappingURL=FileUploader.css.map */

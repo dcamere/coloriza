@@ -1,0 +1,54 @@
+@import '../../variables.scss';
+
+.textarea {
+  width: 100%;
+  min-height: 120px;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #ffffff;
+  color: black;
+  border: none;
+  font-size: 18px;
+  font-family: $lato;
+  font-weight: 700;
+  outline: none;
+  box-sizing: border-box;
+  resize: none;
+
+  &::placeholder {
+    color: $gray2;
+  }
+
+  &--error {
+    border: 1px red solid;
+
+    ~ .counter {
+      color: red;
+    }
+
+    &::placeholder {
+      color: red;
+    }
+  }
+
+  &--active {
+    border: 3px $green solid;
+  }
+
+  textarea {
+    resize: none;
+  }
+}
+
+.counter {
+  position: absolute;
+  z-index: 2;
+  bottom: 12px;
+  right: 16px;
+  font-weight: bold;
+}
+
+.textarea-wrapper {
+  position: relative;
+  width: 100%;
+}

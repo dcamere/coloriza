@@ -1,0 +1,63 @@
+@import '../../variables.scss';
+
+.custom-input {
+  background-color: white;
+  transition: background-color 250ms ease-in-out !important;
+  color: black;
+  text-align: left;
+  padding: 9px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 3px transparent solid;
+  backface-visibility: hidden;
+  width: calc(50% - 5px);
+
+  h3 {
+    font-size: 18px;
+    font-family: $lato;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  input {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &--checked {
+    border: 3px $green solid;
+    background-color: white !important;
+  }
+
+  img {
+    backface-visibility: hidden;
+    width: 100%;
+    margin-bottom: 8px;
+    aspect-ratio: 2.75;
+    filter: blur(10px);
+    clip-path: inset(0% 0% 0% 0% round 8px);
+    transition: filter 150ms ease-in !important;
+    min-height: 106px;
+    @media screen and (min-width: 768px) {
+      min-height: auto;
+    }
+
+    &.loaded {
+      filter: blur(0);
+    }
+  }
+
+  &:hover {
+    background-color: $gray3;
+  }
+
+  @media (min-width: 768px) {
+    flex: 0 0 calc(50% - 6px);
+  }
+
+  @media (min-width: 962px) {
+    width: auto;
+  }
+}

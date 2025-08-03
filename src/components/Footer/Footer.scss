@@ -1,0 +1,43 @@
+.footer {
+  display: flex;
+  background-color: white;
+  padding: 16px;
+  width: 100%;
+  justify-content: space-around;
+  position: sticky;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  z-index: 9;
+  box-shadow: 1px 1px 8px 0px #b7b7b7;
+
+  @media (min-width: 768px) {
+    position: fixed;
+    bottom: 0px;
+  }
+}
+
+.footer-container {
+  max-width: 980px;
+  width: 100%;
+}
+.button-container {
+  display: flex;
+  justify-content: space-between;
+
+  @media (min-width: 768px) and (max-width: 1200px) {
+    gap: 350px;
+  }
+  @media (max-width: 600px) {
+    justify-content: space-between;
+  }
+}
+
+.footer-logo {
+  max-width: 104px;
+  object-fit: contain;
+
+  @media (min-width: 768px) {
+    max-width: 148px;
+  }
+}

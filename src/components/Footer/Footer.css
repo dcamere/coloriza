@@ -1,0 +1,8 @@
+.footer {
+  display: flex;
+  margin-top: 12px;
+  background-color: white;
+  padding: 24px 12px;
+  width: 100%;
+  justify-content: space-around;
+}/*# sourceMappingURL=Footer.css.map */

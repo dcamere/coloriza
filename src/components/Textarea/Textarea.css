@@ -1,0 +1,59 @@
+.textarea {
+  width: 100%;
+  min-height: 120px;
+  border-radius: 8px;
+  padding: 24px;
+  gap: 8px;
+  background-color: #FFFFFF;
+  color: black;
+  border: none;
+  font-size: 20px;
+  font-weight: 700;
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+}
+@media (min-width: 768px) {
+  .textarea {
+    width: 788px;
+  }
+}
+.textarea::-moz-placeholder {
+  color: #c4c4c4;
+}
+.textarea::placeholder {
+  color: #c4c4c4;
+}
+.textarea--error {
+  border: 1px red solid;
+}
+.textarea--error ~ .counter {
+  color: red;
+}
+.textarea--error::-moz-placeholder {
+  color: red;
+}
+.textarea--error::placeholder {
+  color: red;
+}
+.textarea--active {
+  border: 3px #2abc05 solid;
+}
+
+.counter {
+  position: absolute;
+  z-index: 2;
+  bottom: 20px;
+  right: 30px;
+  font-weight: bold;
+}
+
+.textarea-wrapper {
+  position: relative;
+  width: 100%;
+}
+@media screen and (min-width: 768px) {
+  .textarea-wrapper {
+    max-width: 95%;
+  }
+}/*# sourceMappingURL=Textarea.css.map */
