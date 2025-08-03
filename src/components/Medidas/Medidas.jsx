@@ -8,6 +8,7 @@ export const Medidas = (props) => {
   const { updatePayload } = useFormPayload()
   const methods = useFormContext()
   const formData = methods.getValues()
+  const { formState: { errors }, trigger } = methods;
   const wallRef = useRef(null)
 
   const { register } = props
@@ -15,12 +16,27 @@ export const Medidas = (props) => {
   const [height, setHeight] = useState(formData['alto'] || 0)
   const [area, setArea] = useState(0)
 
-  const handleHeightChange = (e) => {
-    setHeight(Number(e.target.value))
+  const handleHeightChange = async (e) => {
+    const value = Number(e.target.value);
+    setHeight(value);
+    // Actualizar el valor en react-hook-form
+    methods.setValue('alto', value);
+    // Disparar validación en tiempo real
+    await trigger('alto');
   }
 
-  const handleWidthChange = (e) => {
-    setWidth(Number(e.target.value))
+  const handleWidthChange = async (e) => {
+    const value = Number(e.target.value);
+    setWidth(value);
+    // Actualizar el valor en react-hook-form
+    methods.setValue('ancho', value);
+    // Disparar validación en tiempo real
+    await trigger('ancho');
+  }
+
+  // Función para manejar el blur y disparar validación
+  const handleBlur = async (fieldName) => {
+    await trigger(fieldName);
   }
 
   useEffect(() => {
@@ -71,7 +87,9 @@ export const Medidas = (props) => {
                   min="1"
                   placeholder="Escribe la medida en metros"
                   register={register}
-                  onInput={handleWidthChange}
+                  onChange={handleWidthChange}
+                  error={errors.ancho}
+                  onBlur={() => handleBlur('ancho')}
                 />
               </div>
               <div>
@@ -83,7 +101,9 @@ export const Medidas = (props) => {
                   min="1"
                   placeholder="Escribe la medida en metros"
                   register={register}
-                  onInput={handleHeightChange}
+                  onChange={handleHeightChange}
+                  error={errors.alto}
+                  onBlur={() => handleBlur('alto')}
                 />
               </div>
             </div>

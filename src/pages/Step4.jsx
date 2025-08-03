@@ -2,6 +2,7 @@ import FileItem from '../components/FileUploader/SingleFile'
 import { FileUploader } from '../components/FileUploader/FileUploader'
 import { Medidas } from '../components/Medidas/Medidas'
 import { ENV_VARS } from '../utils/constants/index'
+import { useFormContext } from 'react-hook-form'
 
 const fileUploadFunction = async (payload) => {
   if (!payload) return

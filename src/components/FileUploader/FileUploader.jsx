@@ -23,6 +23,7 @@ export const FileUploader = (props) => {
 
   const inputRef = useRef(null)
   const [selectedFiles, setSelectedFiles] = useState(prevUploads)
+  const [hasInteracted, setHasInteracted] = useState(false) // Nuevo estado para trackear interacción
   
   // Obtener errores de validación
   const uploadError = methods.formState?.errors?.uploads?.message
@@ -33,9 +34,10 @@ export const FileUploader = (props) => {
       isValid: methods.formState.isValid,
       errors: methods.formState.errors,
       uploadError: uploadError,
-      selectedFilesCount: selectedFiles.length
+      selectedFilesCount: selectedFiles.length,
+      hasInteracted: hasInteracted
     });
-  }, [methods.formState.isValid, uploadError, selectedFiles.length]);
+  }, [methods.formState.isValid, uploadError, selectedFiles.length, hasInteracted]);
 
   // Efecto para sincronizar selectedFiles con el formulario y payload
   useEffect(() => {
@@ -43,17 +45,26 @@ export const FileUploader = (props) => {
       const filesString = selectedFiles.length > 0 ? JSON.stringify(selectedFiles) : '';
       console.log('Updating uploads field:', { selectedFiles: selectedFiles.length, filesString });
       setValue('uploads', filesString);
-      // Trigger validation for the uploads field after updating
-      const validationResult = await methods.trigger('uploads');
-      console.log('Validation result for uploads:', validationResult);
-      console.log('Form errors after validation:', methods.formState.errors);
+      
+      // Solo disparar validación si el usuario ya interactuó
+      if (hasInteracted) {
+        const validationResult = await methods.trigger('uploads');
+        console.log('Validation result for uploads:', validationResult);
+        console.log('Form errors after validation:', methods.formState.errors);
+      }
+      
       updatePayload({
         uploads: selectedFiles
       });
     };
     
     syncFiles();
-  }, [selectedFiles]); // Solo selectedFiles como dependencia
+  }, [selectedFiles, hasInteracted]); // Agregar hasInteracted como dependencia
+
+  const handleUploadClick = () => {
+    setHasInteracted(true); // Marcar interacción al hacer clic
+    inputRef?.current?.click();
+  };
 
   const handleOnChange = async (event) => {
     const files = Array.from(event.target.files);
@@ -97,7 +108,7 @@ export const FileUploader = (props) => {
     <>
       <div className="uploader-container" style={{ position: 'relative' }}>
         <h2>Sube una o varias fotos del espacio por favor</h2>
-        <div className="file-uploader" onClick={() => inputRef?.current?.click()}>
+        <div className="file-uploader" onClick={handleUploadClick}>
           {text}
           <CgSoftwareUpload />
           <input
@@ -107,13 +118,12 @@ export const FileUploader = (props) => {
             onChange={(e) => typeof apiCall === 'function' && handleOnChange(e)}
           />
         </div>
-        {uploadError && (
+        {uploadError && hasInteracted && (
           <div className="error-message" style={{ 
             position: 'absolute', 
             bottom: '-2px',
             left: '0',
-            color: 'red', 
-            fontSize: '14px', 
+            color: 'red',
             textAlign: 'center',
             marginTop: '8px',
             right: '0',

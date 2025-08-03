@@ -1,7 +1,7 @@
 import React from 'react'
 import './Input.scss'
 
-export const Input = ({ name, type, min, placeholder, inputclass, register, error, onBlur, onChange, ...rest }) => {
+export const Input = ({ name, type, min, placeholder, inputclass, register, error, onBlur, onChange, onInput, ...rest }) => {
   const registerProps = register(name);
   
   return (
@@ -19,6 +19,10 @@ export const Input = ({ name, type, min, placeholder, inputclass, register, erro
         onChange={(e) => {
           registerProps.onChange(e); // Llamar al onChange del register
           if (onChange) onChange(e); // Llamar al onChange personalizado si existe
+        }}
+        onInput={(e) => {
+          // onInput se dispara antes que onChange
+          if (onInput) onInput(e); // Llamar al onInput personalizado si existe
         }}
         {...rest}
       />
