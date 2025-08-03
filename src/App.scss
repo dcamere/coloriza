@@ -101,6 +101,14 @@ body,
     width: 25%;
     padding: 8px 4px;
   }
+
+  img {
+    min-width: 300px;
+    max-height: 40px !important;
+    @media (min-width: 768px) {
+      min-width: 300px;
+    }
+  }
 }
 
 .header-logo {

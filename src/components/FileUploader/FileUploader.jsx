@@ -107,7 +107,7 @@ export const FileUploader = (props) => {
             onChange={(e) => typeof apiCall === 'function' && handleOnChange(e)}
           />
         </div>
-        {uploadError && hasInteracted && (
+        {/* {uploadError && hasInteracted && (
           <div className="error-message" style={{ 
             position: 'absolute', 
             bottom: '-2px',
@@ -124,7 +124,7 @@ export const FileUploader = (props) => {
           }}>
             {uploadError}
           </div>
-        )}
+        )} */}
       </div>
       {children && typeof children === 'function' ? children({ selectedFiles, setSelectedFiles }) : null}
     </>
