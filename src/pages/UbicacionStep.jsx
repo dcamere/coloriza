@@ -127,7 +127,7 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
   }, [modalOpen]);
 
   // Guardar coordenadas seleccionadas en el payload final
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (selectedCoords) {
       // Guardar las coordenadas en el formulario usando setValue
       methods.setValue('latitud', selectedCoords.lat);
@@ -142,6 +142,9 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
         latitud: selectedCoords.lat,
         longitud: selectedCoords.lng,
       });
+      
+      // Disparar validación de los campos de coordenadas
+      await trigger(['latitud', 'longitud']);
       
       setIsLocationConfirmed(true);
     }
