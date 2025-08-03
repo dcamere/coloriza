@@ -112,7 +112,7 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
 
       const script = document.createElement('script');
       script.id = 'google-maps-script';
-      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDKYwd1b4Sb3rOMlF_WlJt2TgZARHlTSdM`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyB9Ien7Gy2gPnCFhps0A8e9URKRVgLtZSE`;
       script.async = true;
       script.onload = () => {
         setTimeout(initializeMap, 100);
