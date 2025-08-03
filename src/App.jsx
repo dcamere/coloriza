@@ -148,7 +148,7 @@ function AppContent() {
         </FormProvider>
 
         <Modal
-          isOpen={true || isModalOpen}
+          isOpen={isModalOpen}
           onClose={() => {
             setIsModalOpen(false)
             window.location.reload()
