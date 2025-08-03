@@ -34,7 +34,7 @@ export const Footer = (props) => {
               Volver
             </Button>
           ) : (
-            <img className="footer-logo" src="footer-logo.svg" />
+            <img className="footer-logo" src="LOGO-GRIS.svg" />
           )}
 
           <Button
