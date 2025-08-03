@@ -2,18 +2,18 @@
   display: flex;
   background-color: white;
   padding: 16px;
-  width: 100%;
+  width: 100vw;
   justify-content: space-around;
-  position: sticky;
-  bottom: 0px;
+  position: fixed;
+  bottom: 0;
   left: 0;
   right: 0;
-  z-index: 9;
+  z-index: 1002;
   box-shadow: 1px 1px 8px 0px #b7b7b7;
 
   @media (min-width: 768px) {
     position: fixed;
-    bottom: 0px;
+    bottom: 0;
   }
 }
 

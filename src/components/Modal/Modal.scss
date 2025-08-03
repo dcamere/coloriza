@@ -1,3 +1,21 @@
+.modal__content--radius8 {
+  border-radius: 16px !important;
+}
+.modal__content--nopadding {
+  padding: 0 !important;
+}
+.modal__content--ovh {
+  overflow: hidden;
+}
+.modal--wide {
+  max-width: 90vw !important;
+  width: 90vw !important;
+  @media screen and (min-width: 768px) {
+    min-height: 568px;
+    max-width: 1000px !important;
+    width: 80vw !important;
+  }
+}
 .modal {
   background: white;
   border-radius: 16px;
@@ -40,7 +58,11 @@
   }
 
   &__closer {
-    font-size: 20px;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    z-index: 9999;
+    font-size: 36px;
     font-weight: bold;
     cursor: pointer;
     align-self: flex-end;
@@ -54,6 +76,7 @@
     pointer-events: all;
   }
 }
+
 
 .modal-shadow {
   position: fixed;
@@ -75,6 +98,11 @@
   @media only screen and (min-width: 960px) {
     background-size: 80%;
   }
+}
+
+.modal-shadow--simple {
+  background: rgba(0, 0, 0, 0.6) !important;
+  background-image: none !important;
 }
 
 @keyframes animatedBackground {

@@ -2,10 +2,13 @@ import './Medidas.scss'
 import React, { useState, useEffect, useRef } from 'react'
 import { Input } from '../Input/Input'
 import { useFormContext } from 'react-hook-form'
+import { useFormPayload } from '../../contexts/FormContext'
 
 export const Medidas = (props) => {
+  const { updatePayload } = useFormPayload()
   const { getValues, setValue } = useFormContext().methods
   const formData = getValues()
+  const wallRef = useRef(null)
 
   const { register } = props
   const [width, setWidth] = useState(formData['ancho'] || 0)
@@ -21,15 +24,25 @@ export const Medidas = (props) => {
   }
 
   useEffect(() => {
-    areaCalculation(height, width)
-  }, [height, width])
-
-  useEffect(() => {
-    setArea(width * height)
-  }, [height, width])
+    if (height > 0 && width > 0) {
+      areaCalculation(height, width)
+      // Guardar el área calculada en el formulario y en el contexto
+      const calculatedArea = width * height
+      setArea(calculatedArea)
+      setValue('area', calculatedArea)
+      
+      // Actualizar el contexto del payload con las medidas
+      updatePayload({
+        ancho: width,
+        alto: height,
+        area: calculatedArea
+      })
+    }
+  }, [height, width]) // Removido setValue y updatePayload de las dependencias
 
   const areaCalculation = (height, width) => {
-    if (!height || !width) return
+    if (!height || !width || !wallRef.current) return
+    const wall = wallRef.current
     if (height === width) {
       wall.style.width = '100%'
       wall.style.height = '100%'
@@ -86,7 +99,7 @@ export const Medidas = (props) => {
             <div className="secure-area">
               <div className="height-label">Altura: {height}m</div>
               <div className="width-label">Ancho: {width}m</div>
-              <div className="wall squares" id="wall"></div>
+              <div className="wall squares" id="wall" ref={wallRef}></div>
             </div>
           )}
         </div>

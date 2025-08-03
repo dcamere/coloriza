@@ -1,3 +1,4 @@
+import FileItem from '../components/FileUploader/SingleFile'
 import { FileUploader } from '../components/FileUploader/FileUploader'
 import { Medidas } from '../components/Medidas/Medidas'
 import { ENV_VARS } from '../utils/constants/index'
@@ -27,19 +28,29 @@ export const Step4 = ({
 }) => {
   return (
     <>
+      <div className="medidas-logo">
+        <img src="/coloriza-logo.png" alt="Coloriza Logo" />
+      </div>
       <h2 className="title">Medidas</h2>
       <div className="main-container">
         <Medidas register={register} />
-        <div className="uploader-container">
-          <h2>Sube una foto para entendernos mejor:</h2>
-          <FileUploader
-            setValue={setValue}
-            apiCall={fileUploadFunction}
-            text="Seleccionar archivo"
-            isAnyElementLoading={isAnyElementLoading}
-            setIsAnyElementLoading={setIsAnyElementLoading}
-          />
-        </div>
+        <FileUploader
+          setValue={setValue}
+          apiCall={fileUploadFunction}
+          text="Seleccionar archivo"
+          isAnyElementLoading={isAnyElementLoading}
+          setIsAnyElementLoading={setIsAnyElementLoading}
+        >
+          {({ selectedFiles, setSelectedFiles }) => <>
+            <div className="selected-files">
+              <FileItem
+                setValue={setValue}
+                selectedFiles={selectedFiles}
+                setSelectedFiles={setSelectedFiles}
+              />
+            </div>
+          </>}
+        </FileUploader>
       </div>
     </>
   )

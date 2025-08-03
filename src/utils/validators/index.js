@@ -1,76 +1,60 @@
 import * as Yup from 'yup'
-import parse from 'date-fns/parse'
+
+// Regex para teléfono peruano (9 dígitos que empiecen con 9)
+const peruPhoneRegex = /^9\d{8}$/
 
 const validators = [
+  // Paso 0: Medidas (Step4)
   {
-    estiloMural: Yup.string().nullable(),
-    estiloMuralOpcional: Yup.string().nullable(),
-    custom: Yup.mixed().test({
-      name: 'radioOrTextArea',
-      test: function(value) {
-        const { estiloMural, estiloMuralOpcional } = this.parent;
-        return (!!estiloMural || !!estiloMuralOpcional) && (!estiloMuralOpcional || estiloMuralOpcional.length >= 5);
-      },
-      message: 'Por favor, selecciona una opción del radio o escribe algo con al menos 5 caracteres en el textarea.',
-    }),
-
+    ancho: Yup.number()
+      .typeError('Debe ser un número')
+      .min(1, 'Debe ser mayor a 0')
+      .required('Este campo es requerido'),
+    alto: Yup.number()
+      .typeError('Debe ser un número')
+      .min(1, 'Debe ser mayor a 0')
+      .required('Este campo es requerido'),
+    // uploads es opcional, no se valida
   },
+  
+  // Paso 1: Ubicación (UbicacionStep)
   {
-    superficieMural: Yup.string().nullable(),
-    superficieMuralOpcional: Yup.string().nullable(),
-    custom: Yup.mixed().test({
-      name: 'radioOrTextArea',
-      test: function(value) {
-        const { superficieMural, superficieMuralOpcional } = this.parent;
-        return (!!superficieMural || !!superficieMuralOpcional) && (!superficieMuralOpcional || superficieMuralOpcional.length >= 5);
-      },
-      message: 'Por favor, selecciona una opción del radio o escribe algo con al menos 5 caracteres en el textarea.',
-    }),
+    direccionUsuario: Yup.string()
+      .min(3, 'Debe tener al menos 3 caracteres')
+      .max(200, 'No puede tener más de 200 caracteres')
+      .required('Este campo es requerido'),
+    porQueMejorar: Yup.string()
+      .min(5, 'Debe tener al menos 5 caracteres')
+      .max(200, 'No puede tener más de 200 caracteres')
+      .required('Este campo es requerido'),
+    // Validar que se hayan seleccionado coordenadas del mapa
+    latitud: Yup.number()
+      .typeError('Debe seleccionar una ubicación en el mapa')
+      .required('Debe seleccionar una ubicación en el mapa'),
+    longitud: Yup.number()
+      .typeError('Debe seleccionar una ubicación en el mapa')
+      .required('Debe seleccionar una ubicación en el mapa'),
   },
+  
+  // Paso 2: Contacto (ContactoStep)
   {
-    espacioMural: Yup.string().nullable(),
-    espacioMuralOpcional: Yup.string().nullable(),
-    custom: Yup.mixed().test({
-      name: 'radioOrTextArea',
-      test: function(value) {
-        const { espacioMural, espacioMuralOpcional } = this.parent;
-        return (!!espacioMural || !!espacioMuralOpcional) && (!espacioMuralOpcional || espacioMuralOpcional.length >= 5);
-      },
-      message: 'Por favor, selecciona una opción del radio o escribe algo con al menos 5 caracteres en el textarea.',
-    }),
-  },
-  {
-    ancho: Yup.number().min(1, '').required('Este campo es requerido'),
-    alto: Yup.number().min(1, '').required('Este campo es requerido'),
-  },
-  {
-    nombreUsuario: Yup.string()
+    nombreContacto: Yup.string()
       .min(2, 'Debe tener al menos 2 caracteres')
       .max(80, 'No puede tener más de 80 caracteres')
       .required('Este campo es requerido'),
-    fechaRequerida: Yup.date()
-      .transform(function (value, originalValue) {
-        if (this.isType(value)) return value
-        const result = parse(originalValue, 'dd/MM/yyyy', new Date())
-        return result
+    comoEnteraste: Yup.string()
+      .required('Este campo es requerido'),
+    // Validaciones condicionales para campos opcionales
+    whatsapp: Yup.string()
+      .test('whatsapp-format', 'Debe ser un número peruano válido (ej: 944444872)', function(value) {
+        if (!value || value.length === 0) return true; // Es opcional
+        return peruPhoneRegex.test(value);
+      }),
+    email: Yup.string()
+      .test('email-format', 'Debe ser un email válido', function(value) {
+        if (!value || value.length === 0) return true; // Es opcional
+        return Yup.string().email().isValidSync(value);
       })
-      .typeError('Debe ingresar una fecha válida')
-      .min(new Date(), 'No es posible reservas de fechas pasadas')
-      .required('La fecha es requerida'),
-    direccionUsuario: Yup.string()
-      .min(2, 'Debe tener al menos 2 caracteres')
-      .max(200, 'No puede tener más de 200 caracteres')
-      .required('Este campo es requerido'),
-    celularUsuario: Yup.string()
-      .min(5, 'Debe tener al menos 5 números')
-      .max(15, 'No puede tener más de 15 caracteres')
-      .required('Este campo es requerido'),
-    emailUsuario: Yup.string()
-      .email('El email no tiene un formato valido')
-      .required('Este campo es requerido'),
-    descripcion: Yup.string()
-      .min(5, 'Debe tener al menos 5 números')
-      .required('Este campo es requerido'),
   },
 ]
 

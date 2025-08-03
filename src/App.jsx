@@ -9,22 +9,27 @@ import { Steps } from './components/Steps/Steps'
 import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
-import { Step1, Step2, Step3, Step4, Step5 } from './pages/index'
+import { Step4 } from './pages/Step4'
+import { UbicacionStep } from './pages/UbicacionStep'
+import { ContactoStep } from './pages/ContactoStep'
 import validators from './utils/validators/index'
 import { UserRegister } from './api/UserRegister'
 import { ENV_VARS } from './utils/constants/index'
+import { FormPayloadProvider, useFormPayload } from './contexts/FormContext'
 
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 import { RecaptchaV3 } from './components/RecaptchaV3/RecaptchaV3'
 
-function App() {
+function AppContent() {
+  const { updatePayload, getPayloadForAPI, resetPayload } = useFormPayload()
   const [isLoading, setIsLoading] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
-  const [stepText, setStepText] = useState('Lugar y fecha')
+  const [stepText, setStepText] = useState('Medidas')
+  // Solo 3 pasos: Medidas (0), Ubicación (1), Contacto (2)
   const schema = Yup.object().shape(validators[currentStep])
   const [isAnyElementLoading, setIsAnyElementLoading] = useState(false)
 
-  const { control, setValue, register, formState, handleSubmit, getValues } =
+  const { control, setValue, register, formState, handleSubmit, getValues, watch } =
     useForm({
       resolver: yupResolver(schema),
     })
@@ -35,20 +40,52 @@ function App() {
     'no-scroll',
   )
 
+  // Observar cambios en el formulario y guardarlos en el payload
+  const watchedValues = watch()
+  
+  // Usar useMemo para evitar actualizaciones innecesarias
+  const watchedValuesString = JSON.stringify(watchedValues)
+  
+  useEffect(() => {
+    // Actualizar el payload cada vez que cambien los valores del formulario
+    if (Object.keys(watchedValues).length > 0) {
+      updatePayload(watchedValues)
+    }
+  }, [watchedValuesString, updatePayload])
+
+  // Debug effect separado para evitar loops
+  useEffect(() => {
+    console.log('Form state:', {
+      isValid: formState.isValid,
+      errors: formState.errors,
+      currentStep
+    })
+  }, [formState.isValid, currentStep])
+
   const onSubmit = async (data) => {
     if (!isLoading) setIsLoading(true)
     const token = await RecaptchaV3.executeRecaptcha()
     if (!token) return
 
-    setValue('grecaptcha', token)
-
-    const response = await UserRegister(data)
-    if (response) setIsModalOpen(true)
+    // Actualizar el payload final con el token de reCAPTCHA
+    updatePayload({ ...data, grecaptcha: token })
+    
+    // Obtener el payload estructurado para la API
+    const finalPayload = getPayloadForAPI()
+    
+    console.log('Payload final enviado:', finalPayload)
+    
+    const response = await UserRegister(finalPayload)
+    if (response) {
+      setIsModalOpen(true)
+      resetPayload() // Limpiar el payload después del envío exitoso
+    }
     setIsLoading(false)
-    console.log('Rspt: ', response)
+    console.log('Respuesta del API:', response)
   }
 
-  const mainSteps = [Step1, Step2, Step3, Step4, Step5]
+  // Nuevo orden de pasos: Medidas, Ubicación, Contacto
+  const mainSteps = [Step4, UbicacionStep, ContactoStep]
   const ActualStep = mainSteps[currentStep]
 
   useLayoutEffect(() => {
@@ -59,21 +96,14 @@ function App() {
     return () => clearTimeout(timeout)
   }, [])
 
-  const updateStepText = () => {
-    if (window.innerWidth <= 768) {
-      setStepText('Lugar')
-    } else {
-      setStepText('Lugar y fecha')
-    }
-  }
-
+  // El texto del paso cambia según el currentStep
   useEffect(() => {
-    updateStepText()
-
-    window.addEventListener('resize', updateStepText)
-
-    return () => {
-      window.removeEventListener('resize', updateStepText)
+    if (currentStep === 0) {
+      setStepText('Medidas')
+    } else if (currentStep === 1) {
+      setStepText(window.innerWidth <= 768 ? 'Ubicación' : 'Ubicación')
+    } else if (currentStep === 2) {
+      setStepText('Contacto')
     }
   }, [currentStep])
 
@@ -90,7 +120,7 @@ function App() {
             <div className="step-container">
               <Steps
                 setCurrentStep={setCurrentStep}
-                steps={['Estilo', 'Superficie', 'Espacio', 'Medidas', stepText]}
+                steps={['Medidas', 'Ubicación', 'Contacto']}
                 currentStep={currentStep}
               />
             </div>
@@ -136,6 +166,14 @@ function App() {
         <RecaptchaV3 />
       </GoogleReCaptchaProvider>
     </>
+  )
+}
+
+function App() {
+  return (
+    <FormPayloadProvider>
+      <AppContent />
+    </FormPayloadProvider>
   )
 }
 

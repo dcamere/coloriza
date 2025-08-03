@@ -4,9 +4,25 @@
 html,
 body,
 #root {
-  background: $white1 !important;
+  background: #2C2C2C !important;
   width: 100%;
   color: black;
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 302px;
+    background: url('/coloriza-bg.png') no-repeat center bottom;
+    background-size: cover;
+    z-index: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
 
   &.no-scroll {
     overflow: hidden;
@@ -59,8 +75,9 @@ body,
   margin: 0 auto;
   position: sticky;
   top: 0;
-  background: $white1;
-  z-index: 99;
+  background: #2C2C2C;
+  color: #F1F1F1;
+  z-index: 1001;
   box-shadow: 1px 1px 8px 0px $placeholderGray;
 }
 
@@ -68,20 +85,29 @@ body,
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   gap: 16px;
-  padding-top: 20px;
-  margin-bottom: 20px;
+  background-color: white;
+  border-radius: 8px;
+  width: 100%;
+  padding: 24px;
+  margin-bottom: 13px;
+  margin-top: 13px;
+  @media (min-width: 768px) {
+      margin-top: 0;
+      flex-direction: row;
+  }
 
   & h2 {
     font-family: $lato;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 20px;
     font-weight: 600;
     color: #1a1a1a;
     text-align: center;
 
     @media (min-width: 768px) {
-      font-size: 24px;
+      font-size: 13px;
     }
   }
 }
@@ -143,7 +169,7 @@ body,
 }
 
 .title {
-  color: $green;
+  color: #F1F1F1;
   font-weight: bold;
   font-size: 24px;
   line-height: 32px;
@@ -174,6 +200,8 @@ body,
 }
 
 .main-body {
+  position: relative;
+  z-index: 1000;
   @media (min-width: 768px) {
     overflow-y: auto;
     width: 100%;
@@ -244,4 +272,87 @@ body,
       width: 50%;
     }
   }
+}
+
+.coloriza-logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.coloriza-logo-img {
+  max-width: 180px;
+  height: auto;
+  display: block;
+  @media (min-width: 768px) {
+    max-width: 300px;
+  }
+}
+
+.medidas-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+
+  img {
+    max-width: 160px;
+    height: auto;
+
+    @media (min-width: 768px) {
+      max-width: 300px;
+    }
+  }
+}
+
+.mt0 {
+  margin-top: 0 !important
+}
+
+.button-map {
+  border: 1px solid #FF8A00;
+  color: #FF8A00;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 6px 16px;
+  border-radius: 8px;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  transition: all .3s;
+  display: flex;
+  justify-content: center;
+  height: 48px;
+
+  img {
+    max-width: 18px;
+    display: inline-block;
+  }
+  
+  span {
+    width: 80%;
+  }
+
+  .button-label {
+    text-align: center;
+    display: inline-block;
+    display: flex;
+    gap: 0;
+  }
+
+  &--selected, &:hover {
+    background-color: #FF8A00;
+    color: white;
+  }
+
+  &--selected {
+    img {
+      max-width: 32px;
+    }
+
+    span {
+      width: 70%;
+    }
+  }
+  
 }

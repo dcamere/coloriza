@@ -54,6 +54,7 @@ $topSpace: 60px;
     align-items: center;
     gap: 14px;
     flex: 1 1;
+    color: #F1F1F1;
     z-index: 2;
     @media only screen and (min-width: 768px) {
       gap: 16px;
@@ -100,8 +101,8 @@ $topSpace: 60px;
 
       &::before {
         content: '';
-        border: 3px $black2 solid;
-        background-color: white;
+        border: 3px #FFE500 solid;
+        background-color: #2C2C2C;
         @media only screen and (min-width: 768px) {
           border-width: 5px;
         }

@@ -2,6 +2,8 @@ import { ENV_VARS } from '../utils/constants/index'
 
 export const UserRegister = async (payload) => {
   try {
+    console.log('Payload enviado al API:', payload)
+
     const response = await fetch(`${ENV_VARS.URL_PATH}/api/customer`, {
       method: 'POST',
       body: JSON.stringify(payload),
@@ -11,7 +13,7 @@ export const UserRegister = async (payload) => {
     })
 
     if (!response.ok) {
-      throw new Error('Network response not ok')
+      throw new Error(`Network response not ok: ${response.status} ${response.statusText}`)
     }
 
     const data = await response.json()

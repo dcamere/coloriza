@@ -38,16 +38,16 @@ export const Footer = (props) => {
           )}
 
           <Button
-            type={currentStep < 4 ? 'button' : 'submit'}
+            type={currentStep < 2 ? 'button' : 'submit'}
             className={`button forward ${rest.isLoading ? 'is-loading' : ''}`}
             disabled={!formState.isValid || isAnyElementLoading === true}
             onClick={() => {
-              if (currentStep <= 3) {
+              if (currentStep < 2) {
                 setCurrentStep(currentStep + 1)
               }
             }}
           >
-            {currentStep < 4 ? 'Continuar' : 'Finalizar'}
+            {currentStep < 2 ? 'Continuar' : 'Finalizar'}
             <IconContext.Provider value={{ className: 'FaArrowRight' }}>
               <FaArrowRight />
             </IconContext.Provider>
