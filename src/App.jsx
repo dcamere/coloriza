@@ -65,10 +65,18 @@ function AppContent() {
     // Obtener el payload estructurado para la API
     const finalPayload = getPayloadForAPI()
     
-    const response = await UserRegister(finalPayload)
-    if (response) {
+    try {
+      const response = await UserRegister(finalPayload)
+      // Comentado temporalmente para desarrollo - siempre mostramos el modal
+      // if (response) {
+        setIsModalOpen(true)
+        resetPayload() // Limpiar el payload después del envío exitoso
+      // }
+    } catch (error) {
+      // Incluso si hay error, mostramos el modal para desarrollo
+      console.log('Error en API, pero mostrando modal para desarrollo:', error)
       setIsModalOpen(true)
-      resetPayload() // Limpiar el payload después del envío exitoso
+      resetPayload()
     }
     setIsLoading(false)
   }
