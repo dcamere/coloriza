@@ -33,12 +33,6 @@ export const Step4 = ({
         <img src="/COLORIZA-TU-BARRIO.svg" alt="Coloriza Logo" />
       </div>
       <div className="main-container">
-        <Medidas register={register} />
-        {/* Campo oculto para registrar uploads en react-hook-form */}
-        <input
-          type="hidden"
-          {...register('uploads')}
-        />
         <FileUploader
           setValue={setValue}
           apiCall={fileUploadFunction}
@@ -56,6 +50,12 @@ export const Step4 = ({
             </div>
           </>}
         </FileUploader>
+        <Medidas register={register} />
+        {/* Campo oculto para registrar uploads en react-hook-form */}
+        <input
+          type="hidden"
+          {...register('uploads')}
+        />
       </div>
     </>
   )
