@@ -24,8 +24,8 @@ function AppContent() {
   const { updatePayload, getPayloadForAPI, resetPayload } = useFormPayload()
   const [isLoading, setIsLoading] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
-  const [stepText, setStepText] = useState('Medidas')
-  // Solo 3 pasos: Medidas (0), Ubicación (1), Contacto (2)
+  const [stepText, setStepText] = useState('Muro')
+  // Solo 3 pasos: Muro (0), Ubicación (1), Contacto (2)
   const schema = Yup.object().shape(validators[currentStep])
   const [isAnyElementLoading, setIsAnyElementLoading] = useState(false)
 
@@ -100,7 +100,7 @@ function AppContent() {
   // El texto del paso cambia según el currentStep
   useEffect(() => {
     if (currentStep === 0) {
-      setStepText('Medidas')
+      setStepText('Muro')
     } else if (currentStep === 1) {
       setStepText(window.innerWidth <= 768 ? 'Ubicación' : 'Ubicación')
     } else if (currentStep === 2) {
@@ -121,7 +121,7 @@ function AppContent() {
             <div className="step-container">
               <Steps
                 setCurrentStep={setCurrentStep}
-                steps={['Medidas', 'Ubicación', 'Contacto']}
+                steps={['Muro', 'Ubicación', 'Contacto']}
                 currentStep={currentStep}
               />
             </div>

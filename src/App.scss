@@ -202,7 +202,7 @@ body,
 .main-body {
   position: relative;
   z-index: 1000;
-  padding-bottom: 120px !important; /* Espacio para el footer en mobile */
+  padding: 40px 0 120px 0 !important; /* Espacio para el footer en mobile */
   
   @media (min-width: 768px) {
     overflow-y: auto;
@@ -213,7 +213,7 @@ body,
     scrollbar-width: thin; /* Firefox */
     scrollbar-color: #333 #eee; /* Firefox */
     margin-bottom: 80px;
-    padding-bottom: 0 !important; /* Remover padding en desktop, usar margin-bottom */
+    padding: 40px 0 60px 0 !important; /* Remover padding en desktop, usar margin-bottom */
 
     &::-webkit-scrollbar {
       width: 10px; /* WebKit */
@@ -299,11 +299,11 @@ body,
   margin-bottom: 16px;
 
   img {
-    max-width: 160px;
+    width: 160px;
     height: auto;
 
     @media (min-width: 768px) {
-      max-width: 300px;
+      width: 300px;
     }
   }
 }

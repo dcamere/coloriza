@@ -30,9 +30,8 @@ export const Step4 = ({
   return (
     <>
       <div className="medidas-logo">
-        <img src="/coloriza-logo.png" alt="Coloriza Logo" />
+        <img src="/COLORIZA-TU-BARRIO.svg" alt="Coloriza Logo" />
       </div>
-      <h2 className="title">Medidas</h2>
       <div className="main-container">
         <Medidas register={register} />
         {/* Campo oculto para registrar uploads en react-hook-form */}
