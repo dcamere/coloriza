@@ -28,17 +28,6 @@ export const FileUploader = (props) => {
   // Obtener errores de validación
   const uploadError = methods.formState?.errors?.uploads?.message
 
-  // Debug effect to monitor form state changes
-  useEffect(() => {
-    console.log('FileUploader - Form state changed:', {
-      isValid: methods.formState.isValid,
-      errors: methods.formState.errors,
-      uploadError: uploadError,
-      selectedFilesCount: selectedFiles.length,
-      hasInteracted: hasInteracted
-    });
-  }, [methods.formState.isValid, uploadError, selectedFiles.length, hasInteracted]);
-
   // Efecto para sincronizar selectedFiles con el formulario y payload
   useEffect(() => {
     const syncFiles = async () => {

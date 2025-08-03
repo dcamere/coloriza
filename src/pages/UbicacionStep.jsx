@@ -71,8 +71,6 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
             lng: e.latLng.lng(),
           };
 
-          console.log('Click en mapa:', coords);
-
           // Limpiar marcador anterior
           if (markerRef.current) {
             markerRef.current.setMap(null);
@@ -90,7 +88,7 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
           setSelectedCoords(coords);
         });
 
-        console.log('Mapa inicializado correctamente - UNA SOLA VEZ');
+        console.log('Mapa inicializado correctamente');
       } catch (error) {
         console.error('Error al inicializar el mapa:', error);
       }

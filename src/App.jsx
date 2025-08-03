@@ -54,15 +54,6 @@ function AppContent() {
     }
   }, [watchedValuesString, updatePayload])
 
-  // Debug effect separado para evitar loops
-  useEffect(() => {
-    console.log('Form state:', {
-      isValid: formState.isValid,
-      errors: formState.errors,
-      currentStep
-    })
-  }, [formState.isValid, currentStep])
-
   const onSubmit = async (data) => {
     if (!isLoading) setIsLoading(true)
     const token = await RecaptchaV3.executeRecaptcha()
@@ -74,15 +65,12 @@ function AppContent() {
     // Obtener el payload estructurado para la API
     const finalPayload = getPayloadForAPI()
     
-    console.log('Payload final enviado:', finalPayload)
-    
     const response = await UserRegister(finalPayload)
     if (response) {
       setIsModalOpen(true)
       resetPayload() // Limpiar el payload después del envío exitoso
     }
     setIsLoading(false)
-    console.log('Respuesta del API:', response)
   }
 
   // Nuevo orden de pasos: Medidas, Ubicación, Contacto
