@@ -29,9 +29,6 @@ export const Step4 = ({
 }) => {
   return (
     <>
-      <div className="medidas-logo">
-        <img src="/COLORIZA-TU-BARRIO.svg" alt="Coloriza Logo" />
-      </div>
       <div className="main-container">
         <FileUploader
           setValue={setValue}

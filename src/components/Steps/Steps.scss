@@ -52,7 +52,7 @@ $topSpace: 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 14px;
+    gap: 6px;
     flex: 1 1;
     color: #F1F1F1;
     z-index: 2;
@@ -98,6 +98,20 @@ $topSpace: 60px;
 
     &.is-complete {
       font-weight: 800;
+
+      &::before {
+        content: '';
+        border: 3px #FFE500 solid;
+        background-color: #2C2C2C;
+        @media only screen and (min-width: 768px) {
+          border-width: 5px;
+        }
+      }
+    }
+
+    &.is-current {
+      font-weight: 800;
+      color: #FFE500;
 
       &::before {
         content: '';

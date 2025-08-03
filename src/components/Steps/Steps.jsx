@@ -12,10 +12,15 @@ export const Steps = (props) => {
       }}
     >
       {steps.map((step, index) => {
+        const isComplete = index < currentStep;
+        const isCurrent = index === currentStep;
+        
         return (
           <div
             className={`steps__step ${
-              index <= currentStep ? 'is-complete' : ''
+              isComplete ? 'is-complete' : ''
+            } ${
+              isCurrent ? 'is-current' : ''
             }`}
             // onClick={()=> setCurrentStep(index)}
             key={index}

@@ -69,16 +69,55 @@ body,
   color: #888;
 }
 
-.step-container {
-  padding: 14px 16px;
+.header-layout {
+  display: flex;
   width: 100%;
-  margin: 0 auto;
   position: sticky;
   top: 0;
   background: #2C2C2C;
-  color: #F1F1F1;
   z-index: 1001;
   box-shadow: 1px 1px 8px 0px $placeholderGray;
+}
+
+.logo-section {
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 8px;
+  transform: translateY(-6px);
+  
+  @media (max-width: 768px) {
+    width: 25%;
+    padding: 8px 4px;
+  }
+}
+
+.header-logo {
+  max-width: 100%;
+  max-height: 60px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  
+  @media (max-width: 768px) {
+    max-height: 35px;
+  }
+}
+
+.step-container {
+  width: 85%;
+  padding: 14px 16px;
+  margin: 0;
+  position: relative;
+  background: transparent;
+  color: #F1F1F1;
+  z-index: 1001;
+  
+  @media (max-width: 768px) {
+    width: 75%;
+    padding: 8px 8px 8px 4px;
+  }
 }
 
 .uploader-container {
@@ -332,14 +371,20 @@ body,
   }
   
   span {
-    width: 80%;
+    width: 90%;
   }
 
   .button-label {
     text-align: center;
     display: inline-block;
     display: flex;
-    gap: 0;
+    font-size: 12px;
+    gap: 10px;
+
+    @media screen and (min-width: 768px) {
+      gap: 0;
+      font-size: 16px;
+    }
   }
 
   &--selected, &:hover {

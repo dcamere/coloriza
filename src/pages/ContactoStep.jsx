@@ -18,9 +18,6 @@ export const ContactoStep = ({ register }) => {
   }
   return (
     <>
-      <div className="medidas-logo">
-        <img src="/COLORIZA-TU-BARRIO.svg" alt="Coloriza Logo" />
-      </div>
       <div className="form-container">
         <div className='f-group'>
           <div>

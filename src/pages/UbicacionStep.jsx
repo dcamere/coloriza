@@ -151,9 +151,6 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
 
   return (
     <>
-      <div className="medidas-logo">
-        <img src="/COLORIZA-TU-BARRIO.svg" alt="Coloriza Logo" />
-      </div>
       <div className="form-container">
         {/* Campos ocultos para validación de coordenadas */}
         <input type="hidden" {...register('latitud')} />
