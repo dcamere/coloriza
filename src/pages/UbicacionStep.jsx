@@ -16,14 +16,27 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
   const mapInstanceRef = useRef(null);
   const markerRef = useRef(null);
   const isMapInitializedRef = useRef(false);
-  const { getValues, setValue } = useFormContext().methods
-  const formData = getValues()
+  const methods = useFormContext()
+  const formData = methods.getValues()
+  const { formState: { errors }, trigger } = methods;
   const [textInput, setTextInput] = useState(
     formData['porQueMejorar'] || '',
   )
 
-  const handleTextareaChange = (event) => {
+  const handleTextareaChange = async (event) => {
     setTextInput(event.target.value)
+    // También disparar validación en tiempo real
+    await trigger('porQueMejorar');
+  }
+
+  // Función para manejar el blur y disparar validación
+  const handleBlur = async (fieldName) => {
+    await trigger(fieldName);
+  }
+
+  // Función para manejar el cambio y disparar validación en tiempo real
+  const handleChange = async (fieldName) => {
+    await trigger(fieldName);
   }
 
   useEffect(() => {
@@ -117,11 +130,11 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
   const handleConfirm = () => {
     if (selectedCoords) {
       // Guardar las coordenadas en el formulario usando setValue
-      setValue('latitud', selectedCoords.lat);
-      setValue('longitud', selectedCoords.lng);
+      methods.setValue('latitud', selectedCoords.lat);
+      methods.setValue('longitud', selectedCoords.lng);
       // No sobrescribir direccionUsuario si el usuario ya escribió algo
-      if (selectedCoords.address && !getValues('direccionUsuario')) {
-        setValue('direccionUsuario', selectedCoords.address);
+      if (selectedCoords.address && !methods.getValues('direccionUsuario')) {
+        methods.setValue('direccionUsuario', selectedCoords.address);
       }
       
       // También actualizar el contexto del payload
@@ -151,6 +164,9 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
               register={register}
               type="text"
               name="direccionUsuario"
+              error={errors.direccionUsuario}
+              onBlur={() => handleBlur('direccionUsuario')}
+              onChange={() => handleChange('direccionUsuario')}
             />
           </div>
           <div>
@@ -201,6 +217,12 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
                   <span>Abrir en Google Maps aquí</span>
                   <img src="/maps.svg" alt="Maps icon" />
                 </Button>
+                {/* Mostrar error de coordenadas si existe */}
+                {(errors.latitud || errors.longitud) && (
+                  <span className="error-message" style={{ display: 'block', color: '#e74c3c', fontSize: '14px', marginTop: '4px', fontWeight: '500' }}>
+                    {errors.latitud?.message || errors.longitud?.message}
+                  </span>
+                )}
                 {/* {selectedCoords && (
                   <div style={{ marginTop: 8 }}>
                     <strong>Coordenadas seleccionadas:</strong> <br />
@@ -221,6 +243,8 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
                 placeholder="Escribe por qué quisieras mejorar este lugar..."
                 maxLength="200"
                 cleanOption={handleTextareaChange}
+                error={errors.porQueMejorar}
+                onBlur={() => handleBlur('porQueMejorar')}
               />
             </div>
           </div>

@@ -8,8 +8,8 @@ import { useFormPayload } from '../../contexts/FormContext'
 
 export const FileUploader = (props) => {
   const { updatePayload } = useFormPayload()
-  const { getValues } = useFormContext().methods
-  const formData = getValues()
+  const methods = useFormContext()
+  const formData = methods.getValues()
   const prevUploads = formData['uploads'] ? JSON.parse(formData['uploads']) : []
   const {
     name,
@@ -23,6 +23,37 @@ export const FileUploader = (props) => {
 
   const inputRef = useRef(null)
   const [selectedFiles, setSelectedFiles] = useState(prevUploads)
+  
+  // Obtener errores de validación
+  const uploadError = methods.formState?.errors?.uploads?.message
+
+  // Debug effect to monitor form state changes
+  useEffect(() => {
+    console.log('FileUploader - Form state changed:', {
+      isValid: methods.formState.isValid,
+      errors: methods.formState.errors,
+      uploadError: uploadError,
+      selectedFilesCount: selectedFiles.length
+    });
+  }, [methods.formState.isValid, uploadError, selectedFiles.length]);
+
+  // Efecto para sincronizar selectedFiles con el formulario y payload
+  useEffect(() => {
+    const syncFiles = async () => {
+      const filesString = selectedFiles.length > 0 ? JSON.stringify(selectedFiles) : '';
+      console.log('Updating uploads field:', { selectedFiles: selectedFiles.length, filesString });
+      setValue('uploads', filesString);
+      // Trigger validation for the uploads field after updating
+      const validationResult = await methods.trigger('uploads');
+      console.log('Validation result for uploads:', validationResult);
+      console.log('Form errors after validation:', methods.formState.errors);
+      updatePayload({
+        uploads: selectedFiles
+      });
+    };
+    
+    syncFiles();
+  }, [selectedFiles]); // Solo selectedFiles como dependencia
 
   const handleOnChange = async (event) => {
     const files = Array.from(event.target.files);
@@ -47,28 +78,12 @@ export const FileUploader = (props) => {
               const arr = selectedFiles.filter(
                 (item) => item.name !== response.name,
               );
-              const updatedFiles = [...arr, response];
-              setValue('uploads', JSON.stringify(updatedFiles));
-              
-              // Actualizar el contexto del payload con los archivos
-              updatePayload({
-                uploads: updatedFiles
-              });
-              
-              return updatedFiles;
+              return [...arr, response];
             });
           }
         } catch (error) {
           setSelectedFiles((selectedFiles) => {
-            const arr = selectedFiles.filter((item) => item.name !== file.name);
-            setValue('uploads', JSON.stringify(arr));
-            
-            // Actualizar el contexto del payload con los archivos filtrados
-            updatePayload({
-              uploads: arr
-            });
-            
-            return arr;
+            return selectedFiles.filter((item) => item.name !== file.name);
           });
           console.warn(error);
         }
@@ -80,7 +95,7 @@ export const FileUploader = (props) => {
   // Permite al padre renderizar los archivos seleccionados donde quiera
   return (
     <>
-      <div className="uploader-container">
+      <div className="uploader-container" style={{ position: 'relative' }}>
         <h2>Sube una o varias fotos del espacio por favor</h2>
         <div className="file-uploader" onClick={() => inputRef?.current?.click()}>
           {text}
@@ -92,6 +107,25 @@ export const FileUploader = (props) => {
             onChange={(e) => typeof apiCall === 'function' && handleOnChange(e)}
           />
         </div>
+        {uploadError && (
+          <div className="error-message" style={{ 
+            position: 'absolute', 
+            bottom: '-2px',
+            left: '0',
+            color: 'red', 
+            fontSize: '14px', 
+            textAlign: 'center',
+            marginTop: '8px',
+            right: '0',
+            zIndex: 10,
+            padding: '4px 8px',
+            borderRadius: '4px',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            fontSize: '10px'
+          }}>
+            {uploadError}
+          </div>
+        )}
       </div>
       {children && typeof children === 'function' ? children({ selectedFiles, setSelectedFiles }) : null}
     </>

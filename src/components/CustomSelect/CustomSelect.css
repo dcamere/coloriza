@@ -4,6 +4,10 @@
   width: 100%;
 }
 
+.custom-select-wrapper.custom-select-wrapper--error .custom-select-arrow {
+  top: calc(50% - 10px); /* Ajustar posición cuando hay mensaje de error */
+}
+
 .custom-select {
   box-sizing: border-box;
   width: 100%;
@@ -17,6 +21,15 @@
   outline: none;
   transition: all 0.5s;
 }
+
+.custom-select.error {
+  border: 1px solid #e74c3c;
+}
+
+.custom-select.error:focus {
+  border: 1px solid #e74c3c;
+}
+
 .custom-select-arrow {
   position: absolute;
   right: 6px;
@@ -29,10 +42,22 @@
   transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
 }
 
+.custom-select-wrapper .error-message {
+  display: block;
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
 @media (min-width: 768px) {
   .custom-select {
     height: 48px;
     border: none;
+  }
+  
+  .custom-select.error {
+    border: 1px solid #e74c3c;
   }
 }
 

@@ -34,10 +34,15 @@ export const Step4 = ({
       <h2 className="title">Medidas</h2>
       <div className="main-container">
         <Medidas register={register} />
+        {/* Campo oculto para registrar uploads en react-hook-form */}
+        <input
+          type="hidden"
+          {...register('uploads')}
+        />
         <FileUploader
           setValue={setValue}
           apiCall={fileUploadFunction}
-          text="Seleccionar archivo"
+          text="Subir imágenes"
           isAnyElementLoading={isAnyElementLoading}
           setIsAnyElementLoading={setIsAnyElementLoading}
         >

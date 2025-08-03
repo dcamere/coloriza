@@ -8,6 +8,12 @@
     height: 48px;
   }
 
+  // Cuando hay error, permitir que se muestre el mensaje
+  &.input--error {
+    overflow: visible;
+    height: auto;
+  }
+
   textarea,
   input {
     border-radius: 8px;
@@ -15,11 +21,15 @@
     border: 1px solid $inputGray;
     transition: border 250ms ease-in-out !important;
     width: 100%;
-    height: 100%;
+    height: 46px;
     font-size: 18px;
     padding: 6px 12px;
     color: black;
     box-sizing: border-box;
+
+    @media (min-width: 768px) {
+      height: 48px;
+    }
 
     &::placeholder {
       color: $placeholderGray;
@@ -29,6 +39,15 @@
     &:focus {
       border: 1px solid $green;
       outline: none;
+    }
+
+    &.error {
+      border: 1px solid #e74c3c;
+      
+      &:active,
+      &:focus {
+        border: 1px solid #e74c3c;
+      }
     }
 
     &::-webkit-outer-spin-button,
@@ -41,6 +60,14 @@
       -moz-appearance: textfield;
       appearance: textfield;
     }
+  }
+
+  .error-message {
+    display: block;
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 4px;
+    font-weight: 500;
   }
 
   &.textarea {

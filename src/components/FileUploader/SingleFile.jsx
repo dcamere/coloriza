@@ -10,15 +10,7 @@ export const FileItem = (props) => {
 
   const handleDelete = (name) => {
     setSelectedFiles((selectedFiles) => {
-      const arr = selectedFiles.filter((item) => item.name !== name);
-      setValue('uploads', JSON.stringify(arr));
-      
-      // Actualizar el contexto del payload con los archivos filtrados
-      updatePayload({
-        uploads: arr
-      });
-      
-      return arr;
+      return selectedFiles.filter((item) => item.name !== name);
     });
   };
 

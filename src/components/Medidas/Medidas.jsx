@@ -6,8 +6,8 @@ import { useFormPayload } from '../../contexts/FormContext'
 
 export const Medidas = (props) => {
   const { updatePayload } = useFormPayload()
-  const { getValues, setValue } = useFormContext().methods
-  const formData = getValues()
+  const methods = useFormContext()
+  const formData = methods.getValues()
   const wallRef = useRef(null)
 
   const { register } = props
@@ -29,7 +29,7 @@ export const Medidas = (props) => {
       // Guardar el área calculada en el formulario y en el contexto
       const calculatedArea = width * height
       setArea(calculatedArea)
-      setValue('area', calculatedArea)
+      methods.setValue('area', calculatedArea)
       
       // Actualizar el contexto del payload con las medidas
       updatePayload({

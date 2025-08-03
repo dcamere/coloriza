@@ -5,8 +5,8 @@ import { PAGE1 } from '../utils/thumbs'
 import { useFormContext } from 'react-hook-form'
 
 export const Step1 = ({ register }) => {
-  const { getValues, setValue } = useFormContext().methods
-  const formData = getValues()
+  const methods = useFormContext()
+  const formData = methods.getValues()
   const previousSelected =
     formData['estiloMural'] && formData['estiloMuralOpcional']
       ? ''
@@ -19,13 +19,13 @@ export const Step1 = ({ register }) => {
 
   const handleRadioChange = (event) => {
     setSelectedOption(event.target.value)
-    setValue('estiloMuralOpcional', '')
+    methods.setValue('estiloMuralOpcional', '')
     setTextInput('')
   }
 
   const handleTextareaChange = (event) => {
     setTextInput(event.target.value)
-    setValue('estiloMural', '')
+    methods.setValue('estiloMural', '')
     setSelectedOption('')
   }
 

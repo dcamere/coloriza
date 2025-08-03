@@ -29,10 +29,11 @@ function AppContent() {
   const schema = Yup.object().shape(validators[currentStep])
   const [isAnyElementLoading, setIsAnyElementLoading] = useState(false)
 
-  const { control, setValue, register, formState, handleSubmit, getValues, watch } =
-    useForm({
-      resolver: yupResolver(schema),
-    })
+  const methods = useForm({
+    resolver: yupResolver(schema),
+  })
+  
+  const { control, setValue, register, formState, handleSubmit, getValues, watch } = methods
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPreloaderOpen, setIsPreloaderOpen] = useState(true)
@@ -111,7 +112,7 @@ function AppContent() {
     <>
       <Preloader open={isPreloaderOpen} />
       <GoogleReCaptchaProvider reCaptchaKey={ENV_VARS.RECAPTCHA_PUBLIC}>
-        <FormProvider methods={{ getValues, setValue }}>
+        <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit(onSubmit)}
             autoComplete="off"

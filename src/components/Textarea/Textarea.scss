@@ -31,6 +31,14 @@
     }
   }
 
+  &.error {
+    border: 1px #e74c3c solid;
+    
+    &::placeholder {
+      color: #e74c3c;
+    }
+  }
+
   &--active {
     border: 3px $green solid;
   }
@@ -51,4 +59,18 @@
 .textarea-wrapper {
   position: relative;
   width: 100%;
+
+  .textarea.error {
+    ~ .counter {
+      bottom: 36px;
+    }
+  }
+  
+  .error-message {
+    display: block;
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 4px;
+    font-weight: 500;    
+  }
 }

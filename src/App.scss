@@ -202,6 +202,8 @@ body,
 .main-body {
   position: relative;
   z-index: 1000;
+  padding-bottom: 120px; /* Espacio para el footer en mobile */
+  
   @media (min-width: 768px) {
     overflow-y: auto;
     width: 100%;
@@ -211,6 +213,7 @@ body,
     scrollbar-width: thin; /* Firefox */
     scrollbar-color: #333 #eee; /* Firefox */
     margin-bottom: 80px;
+    padding-bottom: 0; /* Remover padding en desktop, usar margin-bottom */
 
     &::-webkit-scrollbar {
       width: 10px; /* WebKit */

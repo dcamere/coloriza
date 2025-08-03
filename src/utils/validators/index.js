@@ -17,7 +17,17 @@ const validators = [
       .typeError('Debe ser un número')
       .min(1, 'Debe ser mayor a 0')
       .required('Este campo es requerido'),
-    // uploads es opcional, no se valida
+    uploads: Yup.string()
+      .test('has-files', 'Debes subir al menos 1 archivo', function(value) {
+        if (!value) return false;
+        try {
+          const files = JSON.parse(value);
+          return Array.isArray(files) && files.length > 0;
+        } catch {
+          return false;
+        }
+      })
+      .required('Debes subir al menos 1 archivo'),
   },
   
   // Paso 1: Ubicación (UbicacionStep)
@@ -47,17 +57,15 @@ const validators = [
       .required('Este campo es requerido'),
     comoEnteraste: Yup.string()
       .required('Este campo es requerido'),
+    email: Yup.string()
+      .matches(emailRegex, 'Debe ser un email válido')
+      .required('Este campo es requerido'),
     // Validaciones condicionales para campos opcionales
     whatsapp: Yup.string()
-      .test('whatsapp-format', 'Debe ser un número peruano válido (ej: 944444872)', function(value) {
+      .test('whatsapp-format', 'Debe ser un número válido (ej: 944444444)', function(value) {
         if (!value || value.length === 0) return true; // Es opcional
         return peruPhoneRegex.test(value);
       }),
-    email: Yup.string()
-      .test('email-format', 'Debe ser un email válido', function(value) {
-        if (!value || value.length === 0) return true; // Es opcional
-        return emailRegex.test(value);
-      })
   },
 ]
 
