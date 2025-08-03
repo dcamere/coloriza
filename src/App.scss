@@ -241,6 +241,7 @@ body,
   position: relative;
   z-index: 1000;
   padding: 40px 0 120px 0 !important; /* Espacio para el footer en mobile */
+  width: 90%;
   
   @media (min-width: 768px) {
     overflow-y: auto;
