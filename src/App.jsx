@@ -106,16 +106,18 @@ function AppContent() {
             autoComplete="off"
             className="form-body"
           >
-            <div className="header-layout">
-              <div className="logo-section">
-                <img src="/COLORIZA-TU-BARRIO.svg" alt="Coloriza Tu Barrio" className="header-logo" />
-              </div>
-              <div className="step-container">
-                <Steps
-                  setCurrentStep={setCurrentStep}
-                  steps={['Muro', 'Ubicación', 'Contacto']}
-                  currentStep={currentStep}
-                />
+            <div className="header-wrapper">
+              <div className="header-layout">
+                <div className="logo-section">
+                  <img src="/COLORIZA-TU-BARRIO.svg" alt="Coloriza Tu Barrio" className="header-logo" />
+                </div>
+                <div className="step-container">
+                  <Steps
+                    setCurrentStep={setCurrentStep}
+                    steps={['Muro', 'Ubicación', 'Contacto']}
+                    currentStep={currentStep}
+                  />
+                </div>
               </div>
             </div>
             <div className="main-body">
