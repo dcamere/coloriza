@@ -143,12 +143,12 @@ function AppContent() {
     try {
       const response = await UserRegister(finalPayload)
       
-      // Verificar si la respuesta contiene un _id (éxito)
-      if (response && response._id) {
+      // Verificar si el status es 200 o 201 (éxito)
+      if (response && (response.status === 200 || response.status === 201)) {
         setIsModalOpen(true)
         resetPayload() // Limpiar el payload después del envío exitoso
       } else {
-        // Si no hay _id, mostrar error
+        // Si el status no es 200 o 201, mostrar error
         setToastConfig({
           isOpen: true,
           message: 'No se pudo enviar el formulario, intente nuevamente.',

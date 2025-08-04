@@ -12,14 +12,30 @@ export const UserRegister = async (payload) => {
       },
     })
 
-    if (!response.ok) {
-      throw new Error(`Network response not ok: ${response.status} ${response.statusText}`)
+    // Retornar tanto el status como los datos
+    const result = {
+      status: response.status,
+      data: null,
+      ok: response.ok
     }
 
-    const data = await response.json()
-    return data
+    // Intentar parsear los datos solo si hay contenido
+    if (response.headers.get('content-type')?.includes('application/json')) {
+      try {
+        result.data = await response.json()
+      } catch (parseError) {
+        console.warn('Error parsing JSON response:', parseError)
+      }
+    }
+
+    return result
   } catch (error) {
     console.error('Error fetching user register:', error)
-    return null
+    return {
+      status: 0,
+      data: null,
+      ok: false,
+      error: error.message
+    }
   }
 }
