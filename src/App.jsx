@@ -6,6 +6,7 @@ import { Modal } from './components/Modal/Modal'
 import { Footer } from './components/Footer/Footer'
 import { Preloader } from './components/Preloader/Preloader'
 import { Steps } from './components/Steps/Steps'
+import { Toast } from './components/Toast/Toast'
 import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
@@ -21,7 +22,7 @@ import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 import { RecaptchaV3 } from './components/RecaptchaV3/RecaptchaV3'
 
 function AppContent() {
-  const { updatePayload, getPayloadForAPI, resetPayload } = useFormPayload()
+  const { updatePayload, getPayloadForAPI, resetPayload, payload } = useFormPayload()
   const [isLoading, setIsLoading] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
   const [stepText, setStepText] = useState('Muro')
@@ -37,6 +38,7 @@ function AppContent() {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPreloaderOpen, setIsPreloaderOpen] = useState(true)
+  const [toastConfig, setToastConfig] = useState({ isOpen: false, message: '', type: 'error' })
   document.body.classList[isModalOpen || isPreloaderOpen ? 'add' : 'remove'](
     'no-scroll',
   )
@@ -54,29 +56,112 @@ function AppContent() {
     }
   }, [watchedValuesString, updatePayload])
 
+  // Función helper para obtener el payload con el token de reCAPTCHA incluido
+  const getPayloadForAPIWithToken = (currentPayload, token) => {
+    // Procesar los archivos subidos si existen
+    let uploadedFiles = []
+    if (currentPayload.uploads) {
+      try {
+        uploadedFiles = typeof currentPayload.uploads === 'string' 
+          ? JSON.parse(currentPayload.uploads) 
+          : currentPayload.uploads
+      } catch (error) {
+        console.warn('Error parsing uploads:', error)
+        uploadedFiles = []
+      }
+    }
+
+    // Generar URL de Google Maps si hay coordenadas
+    let ubicacionGoogleMaps = ''
+    if (currentPayload.latitud && currentPayload.longitud) {
+      ubicacionGoogleMaps = `https://www.google.com/maps?q=${currentPayload.latitud},${currentPayload.longitud}`
+    }
+
+    // Estructurar el payload final para el API solo con campos utilizados
+    const finalPayload = {
+      // Medidas (Step 1)
+      ancho: currentPayload.ancho || null,
+      alto: currentPayload.alto || null,
+      area: currentPayload.area || null,
+      
+      // Ubicación (Step 2) - URL de Google Maps en lugar de coordenadas separadas
+      ubicacionGoogleMaps: ubicacionGoogleMaps,
+      direccionUsuario: currentPayload.direccionUsuario || '',
+      porQueMejorar: currentPayload.porQueMejorar || '',
+      
+      // Contacto (Step 3)
+      nombreContacto: currentPayload.nombreContacto || '',
+      comoEnteraste: currentPayload.comoEnteraste || '',
+      whatsapp: currentPayload.whatsapp || '',
+      email: currentPayload.email || '',
+      
+      // Archivos subidos
+      uploads: uploadedFiles,
+      
+      // reCAPTCHA - asegurar que el token se incluya
+      grecaptcha: token || currentPayload.grecaptcha || '',
+    }
+
+    // Solo incluir campos que tienen valores
+    const cleanPayload = {}
+    Object.keys(finalPayload).forEach(key => {
+      const value = finalPayload[key]
+      if (value !== null && value !== '' && value !== undefined) {
+        if (Array.isArray(value) && value.length > 0) {
+          cleanPayload[key] = value
+        } else if (!Array.isArray(value)) {
+          cleanPayload[key] = value
+        }
+      }
+    })
+
+    return cleanPayload
+  }
+
   const onSubmit = async (data) => {
     if (!isLoading) setIsLoading(true)
     const token = await RecaptchaV3.executeRecaptcha()
-    if (!token) return
+    if (!token) {
+      setToastConfig({
+        isOpen: true,
+        message: 'Error con reCAPTCHA. Intente nuevamente.',
+        type: 'error'
+      })
+      setIsLoading(false)
+      return
+    }
 
     // Actualizar el payload final con el token de reCAPTCHA
-    updatePayload({ ...data, grecaptcha: token })
+    const dataWithToken = { ...data, grecaptcha: token }
+    updatePayload(dataWithToken)
     
-    // Obtener el payload estructurado para la API
-    const finalPayload = getPayloadForAPI()
+    // Obtener el payload estructurado para la API con el token incluido
+    // Necesitamos pasar el token directamente para evitar problemas de timing
+    const currentPayload = { ...payload, ...dataWithToken }
+    const finalPayload = getPayloadForAPIWithToken(currentPayload, token)
     
     try {
       const response = await UserRegister(finalPayload)
-      // Comentado temporalmente para desarrollo - siempre mostramos el modal
-      // if (response) {
+      
+      // Verificar si la respuesta contiene un _id (éxito)
+      if (response && response._id) {
         setIsModalOpen(true)
         resetPayload() // Limpiar el payload después del envío exitoso
-      // }
+      } else {
+        // Si no hay _id, mostrar error
+        setToastConfig({
+          isOpen: true,
+          message: 'No se pudo enviar el formulario, intente nuevamente.',
+          type: 'error'
+        })
+      }
     } catch (error) {
-      // Incluso si hay error, mostramos el modal para desarrollo
-      console.log('Error en API, pero mostrando modal para desarrollo:', error)
-      setIsModalOpen(true)
-      resetPayload()
+      console.error('Error en API:', error)
+      setToastConfig({
+        isOpen: true,
+        message: 'No se pudo enviar el formulario, intente nuevamente.',
+        type: 'error'
+      })
     }
     setIsLoading(false)
   }
@@ -166,6 +251,13 @@ function AppContent() {
             Volver al inicio
           </a>
         </Modal>
+
+        <Toast
+          isOpen={toastConfig.isOpen}
+          message={toastConfig.message}
+          type={toastConfig.type}
+          onClose={() => setToastConfig({ ...toastConfig, isOpen: false })}
+        />
 
         <RecaptchaV3 />
       </GoogleReCaptchaProvider>
