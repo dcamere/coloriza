@@ -4,7 +4,7 @@ export const UserRegister = async (payload) => {
   try {
     console.log('Payload enviado al API:', payload)
 
-    const response = await fetch(`${ENV_VARS.URL_PATH}/api/customer`, {
+    const response = await fetch(`${ENV_VARS.URL_PATH}/api/coloriza`, {
       method: 'POST',
       body: JSON.stringify(payload),
       headers: {
