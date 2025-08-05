@@ -1,7 +1,21 @@
+
+import { useEffect } from 'react';
 import './Modal.scss'
 
 export const Modal = (props) => {
+
   const { isOpen, onClose, shadowType, modalType, contentNoPadding, contentRadius8, lessPadding } = props;
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   return (
     <>
