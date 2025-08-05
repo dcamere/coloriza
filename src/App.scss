@@ -83,9 +83,11 @@ body,
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+    padding: 0 16px;
   
   @media (min-width: 768px) {
     padding: 0 20px;
+    gap: 60px;
   }
 }
 
@@ -127,7 +129,7 @@ body,
 .step-container {
   width: 100%;
   max-width: 700px;
-  padding: 14px 16px;
+  padding: 20px 16px 8px 0;
   margin-left: auto;
   margin-right: 0;
   position: relative;
