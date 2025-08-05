@@ -1,7 +1,7 @@
 .footer {
   display: flex;
   background-color: white;
-  padding: 16px;
+  padding: 14px 16px;
   width: 100vw;
   justify-content: space-around;
   position: fixed;
@@ -18,8 +18,18 @@
 }
 
 .footer-container {
-  max-width: 980px;
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+@media (max-width: 768px) {
+  .footer-container {
+    max-width: 100%;
+    width: 100%;
+  }
+  .footer {
+    padding: 8px 8px 8px 4px;
+  }
+}
 }
 .button-container {
   display: flex;

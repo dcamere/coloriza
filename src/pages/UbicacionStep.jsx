@@ -52,8 +52,8 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
       
       try {
         const mapInstance = new window.google.maps.Map(mapContainerRef.current, {
-          center: { lat: -12.1205, lng: -77.0301 },
-          zoom: 15,
+          center: { lat: -12.0464, lng: -77.0428 }, // Centro aproximado Lima
+          zoom: 11, // Zoom para mostrar Lima y Callao
           disableDefaultUI: false,
           zoomControl: true,
           mapTypeControl: false,

@@ -85,7 +85,7 @@ export const Medidas = (props) => {
                   name="ancho"
                   type="number"
                   min="1"
-                  placeholder="Escribe la medida en metros"
+                  placeholder="Ingresa ancho en metros"
                   register={register}
                   onChange={handleWidthChange}
                   error={errors.ancho}
@@ -99,7 +99,7 @@ export const Medidas = (props) => {
                   name="alto"
                   type="number"
                   min="1"
-                  placeholder="Escribe la medida en metros"
+                  placeholder="Ingresa alto en metros"
                   register={register}
                   onChange={handleHeightChange}
                   error={errors.alto}

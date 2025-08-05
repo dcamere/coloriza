@@ -96,7 +96,7 @@ export const FileUploader = (props) => {
   return (
     <>
       <div className="uploader-container" style={{ position: 'relative' }}>
-        <h2>Sube una o varias fotos del espacio por favor</h2>
+        <h2>Para empezar debes subir una o varias fotos del espacio por favor</h2>
         <div className="file-uploader" onClick={handleUploadClick}>
           {text}
           <CgSoftwareUpload />

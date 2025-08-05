@@ -34,6 +34,10 @@
   flex-direction: column;
   transition: opacity 250ms 50ms ease-in-out, top 250ms 50ms ease-in-out !important;
 
+  .less-padding {
+    padding: 30px 40px;
+  }
+
   &__content {
     padding: 24px 32px;
     box-sizing: border-box;
@@ -50,6 +54,19 @@
     .button {
       margin-top: 24px;
       font-size: 18px;
+
+      &-success {
+        font-size: 18px !important;
+        padding: 20px;
+        width: 220px;
+      }
+
+      &-black {
+        background: black;
+        color: white;
+        width: 220px;
+        margin-top: 0;
+      }
     }
 
     @media only screen and (min-width: 768px) {
@@ -59,21 +76,23 @@
 
   &__closer {
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: 10px;
+    right: 16px;
     z-index: 9999;
-    font-size: 36px;
+    font-size: 28px;
     font-weight: bold;
     cursor: pointer;
     align-self: flex-end;
-    margin-right: 20px;
-    margin-top: 20px;
   }
 
   &--open {
     top: 50%;
     opacity: 1;
     pointer-events: all;
+  }
+
+  img {
+    max-width: 280px;
   }
 }
 
