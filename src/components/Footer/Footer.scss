@@ -21,15 +21,13 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-@media (max-width: 768px) {
-  .footer-container {
-    max-width: 100%;
-    width: 100%;
+  padding-left: 0;
+  @media (max-width: 768px) {
+    // max-width: calc(100% - 36px) !important;
+    .footer {
+      padding: 8px 8px 8px 4px;
+    }
   }
-  .footer {
-    padding: 8px 8px 8px 4px;
-  }
-}
 }
 .button-container {
   display: flex;
