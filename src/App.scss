@@ -214,9 +214,18 @@ body,
     font-weight: bold;
     margin-bottom: 12px;
     font-size: 12px;
+    line-height: 1.3;
 
     @media screen and (min-width: 768px) {
       display: none;
+    }
+
+    span {
+      font-size: 10px;
+      font-weight: normal;
+      line-height: 1.3;
+      display: inline-block;
+      margin-top: 6px;
     }
   }
 }

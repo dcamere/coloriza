@@ -35,7 +35,7 @@ export const ContactoStep = ({ register }) => {
           <div>
             <h2>¿Cómo te enteraste de nosotros?</h2>
             <CustomSelect
-              options={["Sitio web", "Youtube", "Instagram", "Facebook", "Amistad o contacto", "Colaboramos anteriormente", "Tarjeta personal", "Evento o actividad"]}
+              options={["Sitio web", "Youtube", "Instagram", "Facebook", "TikTok", "Amistad o contacto", "Colaboramos anteriormente", "Tarjeta personal", "Evento o actividad"]}
               placeholder="Selecciona una opción"
               register={register}
               name="comoEnteraste"
@@ -59,7 +59,7 @@ export const ContactoStep = ({ register }) => {
             />
           </div>
           <div>
-            <h2>Whatsapp <span style={{fontWeight: 'normal'}}>(opcional)</span></h2>
+            <h2>Whatsapp <span style={{ fontWeight: 'normal' }}>(opcional)</span></h2>
             <Input
               placeholder="999999999"
               register={register}

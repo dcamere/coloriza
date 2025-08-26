@@ -214,7 +214,7 @@ export const FileUploader = (props) => {
             <span style={{ fontSize: '14px' }}>o también</span>
           </div>
           <div className="mobile">
-            <p>¿Tienes o conoces una pared donde podamos crear un mural increíble? <br /> Sube una o hasta dos fotos del espacio (pared/muro) para comenzar.</p>
+            <p>¿Tienes o conoces una pared donde podamos crear un mural increíble? <br /> <span>Sube una o hasta dos fotos del espacio (pared/muro) para comenzar.</span></p>
           </div>
           <div className="file-uploader">
             {isMobile ? 'Subir imágenes' : text}

@@ -54,7 +54,7 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
 
     const initializeMap = () => {
       if (!mapContainerRef.current || mapInstanceRef.current) return;
-      
+
       try {
         const mapInstance = new window.google.maps.Map(mapContainerRef.current, {
           center: { lat: -12.0464, lng: -77.0428 }, // Centro aproximado Lima
@@ -132,23 +132,19 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
   // Guardar coordenadas seleccionadas en el payload final
   const handleConfirm = async () => {
     if (selectedCoords) {
-      // Guardar las coordenadas en el formulario usando setValue
+      // Guardar solo las coordenadas en el formulario usando setValue
       methods.setValue('latitud', selectedCoords.lat);
       methods.setValue('longitud', selectedCoords.lng);
-      // No sobrescribir direccionUsuario si el usuario ya escribió algo
-      if (selectedCoords.address && !methods.getValues('direccionUsuario')) {
-        methods.setValue('direccionUsuario', selectedCoords.address);
-      }
-      
-      // También actualizar el contexto del payload
+
+      // Actualizar el contexto del payload
       updatePayload({
         latitud: selectedCoords.lat,
         longitud: selectedCoords.lng,
       });
-      
+
       // Disparar validación de los campos de coordenadas
       await trigger(['latitud', 'longitud']);
-      
+
       setIsLocationConfirmed(true);
     }
     setModalOpen(false);
@@ -222,24 +218,12 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
         {/* Campos ocultos para validación de coordenadas */}
         <input type="hidden" {...register('latitud')} />
         <input type="hidden" {...register('longitud')} />
-        
+
         <div className='f-group'>
-          <div>
-            <h2>Dirección y referencia</h2>
-            <Input
-              placeholder="Escribe la dirección"
-              register={register}
-              type="text"
-              name="direccionUsuario"
-              error={errors.direccionUsuario}
-              onBlur={() => handleBlur('direccionUsuario')}
-              onChange={() => handleChange('direccionUsuario')}
-            />
-          </div>
           <div>
             <h2>Ubicación y coordenadas</h2>
             {isLocationConfirmed ? (
-              <div style={{ position: 'relative'}}>
+              <div style={{ position: 'relative' }}>
                 <a
                   className="button-map button-map--selected"
                   href={`https://www.google.com/maps?q=${selectedCoords.lat},${selectedCoords.lng}`}
@@ -249,8 +233,8 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
                 >
                   <span>Link de la ubicación guardada</span>
                   <img src="/maps-active.svg" alt="Maps icon" />
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     aria-label="Reset ubicación"
                     style={{
                       position: 'absolute',
@@ -276,9 +260,9 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
               </div>
             ) : (
               <>
-                <Button 
-                  className="button-map" 
-                  onClick={() => setModalOpen(true)} 
+                <Button
+                  className="button-map"
+                  onClick={() => setModalOpen(true)}
                   type="button"
                 >
                   <span>Abrir en Google Maps aquí</span>
@@ -299,22 +283,34 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
               </>
             )}
           </div>
+          <div>
+            <h2>Déjanos una referencia</h2>
+            <Input
+              placeholder="Ej: Casa de puerta verde frente al Parque de los bomberos en Surco"
+              register={register}
+              type="text"
+              name="direccionUsuario"
+              error={errors.direccionUsuario}
+              onBlur={() => handleBlur('direccionUsuario')}
+              onChange={() => handleChange('direccionUsuario')}
+            />
+          </div>
         </div>
         <div className="f-group w-100">
-            <div style={{width: '100%'}}>
-              <h2>¿Por qué quisieras mejorar este lugar?</h2>
-              <Textarea
-                textInput={textInput}
-                register={register}
-                name="porQueMejorar"
-                placeholder="Escribe por qué quisieras mejorar este lugar..."
-                maxLength="200"
-                cleanOption={handleTextareaChange}
-                error={errors.porQueMejorar}
-                onBlur={() => handleBlur('porQueMejorar')}
-              />
-            </div>
+          <div style={{ width: '100%' }}>
+            <h2>¿Por qué quisieras mejorar este lugar?</h2>
+            <Textarea
+              textInput={textInput}
+              register={register}
+              name="porQueMejorar"
+              placeholder="Ej: Mi barrio puede verse mejor con arte y color, hoy hay mucha suciedad…"
+              maxLength="200"
+              cleanOption={handleTextareaChange}
+              error={errors.porQueMejorar}
+              onBlur={() => handleBlur('porQueMejorar')}
+            />
           </div>
+        </div>
       </div>
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} shadowType="simple" modalType="wide" contentNoPadding contentRadius8>
         <div style={{ position: 'relative', width: '100%', height: '60vh', minHeight: '320px', maxHeight: '700px' }}>
@@ -387,10 +383,10 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
               </ul>
             )}
           </div>
-          <div 
+          <div
             ref={mapContainerRef}
-            style={{ 
-              width: '100%', 
+            style={{
+              width: '100%',
               height: '100%',
               backgroundColor: '#e5e5e5'
             }}

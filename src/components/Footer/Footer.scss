@@ -2,7 +2,6 @@
   display: flex;
   background-color: white;
   padding: 14px 16px;
-  width: 100vw;
   justify-content: space-around;
   position: fixed;
   bottom: 0;
@@ -12,6 +11,7 @@
   box-shadow: 1px 1px 8px 0px #b7b7b7;
 
   @media (min-width: 768px) {
+    width: 100vw;
     position: fixed;
     bottom: 0;
   }
@@ -22,13 +22,16 @@
   max-width: 1200px;
   margin: 0 auto;
   padding-left: 0;
+
   @media (max-width: 768px) {
+
     // max-width: calc(100% - 36px) !important;
     .footer {
       padding: 8px 8px 8px 4px;
     }
   }
 }
+
 .button-container {
   display: flex;
   justify-content: space-between;
@@ -37,6 +40,7 @@
   @media (min-width: 768px) and (max-width: 1200px) {
     gap: 350px;
   }
+
   @media (max-width: 600px) {
     justify-content: space-between;
   }
