@@ -22,6 +22,10 @@ import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 import { RecaptchaV3 } from './components/RecaptchaV3/RecaptchaV3'
 
 function AppContent() {
+  // Permite mostrar el toast desde cualquier paso
+  const showToast = (message, type = 'error') => {
+    setToastConfig({ isOpen: true, message, type })
+  }
   const { updatePayload, getPayloadForAPI, resetPayload, payload } = useFormPayload()
   const [isLoading, setIsLoading] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
@@ -215,12 +219,18 @@ function AppContent() {
             </div>
             <div className="main-body">
               {
+                // Si es el primer step, en este caso "Muro"
+                currentStep === 0 &&
+                <h1 className="first-title">🎨 ¡Tu pared podría llenarse de arte!</h1>
+              }
+              {
                 <ActualStep
                   register={register}
                   control={control}
                   setValue={setValue}
                   isAnyElementLoading={isAnyElementLoading}
                   setIsAnyElementLoading={setIsAnyElementLoading}
+                  showToast={showToast}
                 />
               }
             </div>

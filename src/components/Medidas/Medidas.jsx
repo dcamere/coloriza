@@ -7,14 +7,24 @@ import { useFormPayload } from '../../contexts/FormContext'
 export const Medidas = (props) => {
   const { updatePayload } = useFormPayload()
   const methods = useFormContext()
-  const formData = methods.getValues()
   const { formState: { errors }, trigger } = methods;
   const wallRef = useRef(null)
 
   const { register } = props
-  const [width, setWidth] = useState(formData['ancho'] || 0)
-  const [height, setHeight] = useState(formData['alto'] || 0)
+  const [width, setWidth] = useState(0)
+  const [height, setHeight] = useState(0)
   const [area, setArea] = useState(0)
+
+  // Sincroniza el estado local con los valores del formulario al montar o cuando cambian
+  useEffect(() => {
+    const formData = methods.getValues();
+    if (formData['ancho'] !== undefined && formData['ancho'] !== width) {
+      setWidth(Number(formData['ancho']));
+    }
+    if (formData['alto'] !== undefined && formData['alto'] !== height) {
+      setHeight(Number(formData['alto']));
+    }
+  }, [methods, methods.getValues, width, height]);
 
   const handleHeightChange = async (e) => {
     const value = Number(e.target.value);
@@ -75,53 +85,56 @@ export const Medidas = (props) => {
   return (
     <>
       <div className="medidas">
-        <div className="medidas__seccion1">
-          <div className="top-wrapper">
-            <div className="medidas__inputs">
-              <div>
-                <h2>Metros de ancho | Horizontal</h2>
-                <Input
-                  inputclass="medidas__seccion1__input"
-                  name="ancho"
-                  type="number"
-                  min="1"
-                  placeholder="Ingresa ancho en metros"
-                  register={register}
-                  onChange={handleWidthChange}
-                  error={errors.ancho}
-                  onBlur={() => handleBlur('ancho')}
-                />
+        <h2 className="medidas-title">Indícanos las medidas (paredes/muro)</h2>
+        <div className="medidas-flex">
+          <div className="medidas__seccion1">
+            <div className="top-wrapper">
+              <div className="medidas__inputs">
+                <div>
+                  <h2>Metros de ancho | Horizontal</h2>
+                  <Input
+                    inputclass="medidas__seccion1__input"
+                    name="ancho"
+                    type="number"
+                    min="1"
+                    placeholder="Ingresa ancho en metros"
+                    register={register}
+                    onChange={handleWidthChange}
+                    error={errors.ancho}
+                    onBlur={() => handleBlur('ancho')}
+                  />
+                </div>
+                <div>
+                  <h2>Metros de alto | Vertical</h2>
+                  <Input
+                    inputclass="medidas__seccion1__input"
+                    name="alto"
+                    type="number"
+                    min="1"
+                    placeholder="Ingresa alto en metros"
+                    register={register}
+                    onChange={handleHeightChange}
+                    error={errors.alto}
+                    onBlur={() => handleBlur('alto')}
+                  />
+                </div>
               </div>
-              <div>
-                <h2>Metros de alto | Vertical</h2>
-                <Input
-                  inputclass="medidas__seccion1__input"
-                  name="alto"
-                  type="number"
-                  min="1"
-                  placeholder="Ingresa alto en metros"
-                  register={register}
-                  onChange={handleHeightChange}
-                  error={errors.alto}
-                  onBlur={() => handleBlur('alto')}
-                />
+              <div className="medidas__seccion1__bottom">
+                <h2>
+                  Área total: <span>{`${area}m²`}</span>
+                </h2>
               </div>
-            </div>
-            <div className="medidas__seccion1__bottom">
-              <h2>
-                Área total: <span>{`${area}m²`}</span>
-              </h2>
             </div>
           </div>
-        </div>
-        <div className="medidas__seccion2">
-          {height > 0 && width > 0 && (
-            <div className="secure-area">
-              <div className="height-label">Altura: {height}m</div>
-              <div className="width-label">Ancho: {width}m</div>
-              <div className="wall squares" id="wall" ref={wallRef}></div>
+          <div className="medidas__seccion2">
+              {height > 0 && width > 0 && (
+                <div className="secure-area">
+                  <div className="height-label">Altura: {height}m</div>
+                  <div className="width-label">Ancho: {width}m</div>
+                  <div className="wall squares" id="wall" ref={wallRef}></div>
+                </div>
+              )}
             </div>
-          )}
         </div>
       </div>
     </>

@@ -26,6 +26,7 @@ export const Step4 = ({
   register,
   isAnyElementLoading,
   setIsAnyElementLoading,
+  showToast,
 }) => {
   return (
     <>
@@ -36,6 +37,7 @@ export const Step4 = ({
           text="Subir imágenes"
           isAnyElementLoading={isAnyElementLoading}
           setIsAnyElementLoading={setIsAnyElementLoading}
+          showToast={showToast}
         >
           {({ selectedFiles, setSelectedFiles }) => <>
             <div className="selected-files">

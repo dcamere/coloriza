@@ -2,11 +2,28 @@
 
 .medidas {
   margin-top: 20px;
-  display: flex;
-  flex-direction: column;
   background-color: white;
   border-radius: 8px;
   padding: 24px;
+
+  &-flex {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+
+    @media screen and (min-width: 768px) {
+      flex-direction: row;
+    }
+  }
+
+  &-title {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 110%;
+    color: $medidas-title;
+    margin-bottom: 26px;
+    font-family: $nunito;
+  }
 
   @media (min-width: 768px) {
     max-width: 784px;

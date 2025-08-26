@@ -5,6 +5,7 @@ import { Button } from '../components/Button/Button'
 import { Modal } from '../components/Modal/Modal'
 import { useFormContext } from 'react-hook-form'
 import { useFormPayload } from '../contexts/FormContext'
+import { FaSearch } from 'react-icons/fa'
 
 
 export const UbicacionStep = ({ register, setUbicacion }) => {
@@ -12,6 +13,10 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCoords, setSelectedCoords] = useState(null);
   const [isLocationConfirmed, setIsLocationConfirmed] = useState(false);
+  const [searchAddress, setSearchAddress] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markerRef = useRef(null);
@@ -110,7 +115,7 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
 
       const script = document.createElement('script');
       script.id = 'google-maps-script';
-      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyB9Ien7Gy2gPnCFhps0A8e9URKRVgLtZSE`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyB9Ien7Gy2gPnCFhps0A8e9URKRVgLtZSE&libraries=places`;
       script.async = true;
       script.onload = () => {
         setTimeout(initializeMap, 100);
@@ -148,6 +153,68 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
     }
     setModalOpen(false);
   };
+
+  // Buscar dirección y colocar pin
+  const handleSearchAddress = async (address) => {
+    const query = address || searchAddress;
+    if (!query.trim()) return;
+    setIsSearching(true);
+    try {
+      const geocoder = new window.google.maps.Geocoder();
+      geocoder.geocode({ address: query }, (results, status) => {
+        if (status === 'OK' && results && results.length > 0) {
+          const location = results[0].geometry.location;
+          const coords = {
+            lat: location.lat(),
+            lng: location.lng(),
+            address: results[0].formatted_address
+          };
+          // Limpiar marcador anterior
+          if (markerRef.current) {
+            markerRef.current.setMap(null);
+            markerRef.current = null;
+          }
+          // Crear nuevo marcador
+          const marker = new window.google.maps.Marker({
+            position: coords,
+            map: mapInstanceRef.current,
+            animation: window.google.maps.Animation.DROP
+          });
+          markerRef.current = marker;
+          setSelectedCoords(coords);
+          mapInstanceRef.current.setCenter(coords);
+          mapInstanceRef.current.setZoom(16);
+          setShowSuggestions(false);
+        } else {
+          alert('No se encontró la dirección.');
+        }
+        setIsSearching(false);
+      });
+    } catch (error) {
+      setIsSearching(false);
+      alert('Error buscando la dirección.');
+    }
+  };
+
+  // Autocomplete de direcciones
+  useEffect(() => {
+    if (!window.google || !window.google.maps || !window.google.maps.places) return;
+    if (!searchAddress.trim()) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+    const autocompleteService = new window.google.maps.places.AutocompleteService();
+    autocompleteService.getPlacePredictions({ input: searchAddress, componentRestrictions: { country: 'pe' } }, (predictions, status) => {
+      if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
+        setSuggestions(predictions);
+        setShowSuggestions(true);
+      } else {
+        setSuggestions([]);
+        setShowSuggestions(false);
+      }
+    });
+  }, [searchAddress]);
 
   return (
     <>
@@ -228,7 +295,7 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
                     <strong>Coordenadas seleccionadas:</strong> <br />
                     Lat: {selectedCoords.lat}, Lng: {selectedCoords.lng}
                   </div>
-                )} */}
+                } */}
               </>
             )}
           </div>
@@ -251,6 +318,75 @@ export const UbicacionStep = ({ register, setUbicacion }) => {
       </div>
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} shadowType="simple" modalType="wide" contentNoPadding contentRadius8>
         <div style={{ position: 'relative', width: '100%', height: '60vh', minHeight: '320px', maxHeight: '700px' }}>
+          {/* Input de búsqueda de dirección */}
+          <div style={{
+            position: 'absolute',
+            top: '16px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 10,
+            width: '90%',
+            maxWidth: '420px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            background: 'rgba(255,255,255,0.95)',
+            borderRadius: '8px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+            padding: '8px 12px',
+          }}>
+            <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+              <input
+                type="text"
+                value={searchAddress}
+                onChange={e => setSearchAddress(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter') handleSearchAddress(); }}
+                placeholder="Buscar dirección..."
+                style={{ flex: 1, fontSize: '16px', border: 'none', outline: 'none', background: 'transparent', padding: '4px 0' }}
+                disabled={isSearching}
+                autoComplete="off"
+              />
+              <button
+                type="button"
+                onClick={() => handleSearchAddress()}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0 8px', display: 'flex', alignItems: 'center' }}
+                disabled={isSearching}
+                aria-label="Buscar dirección"
+              >
+                <FaSearch style={{ fontSize: '20px', color: '#222' }} />
+              </button>
+            </div>
+            {showSuggestions && suggestions.length > 0 && (
+              <ul style={{
+                width: '100%',
+                background: 'white',
+                borderRadius: '6px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
+                margin: 0,
+                padding: '4px 0',
+                listStyle: 'none',
+                position: 'absolute',
+                top: '44px',
+                left: 0,
+                zIndex: 20,
+                maxHeight: '180px',
+                overflowY: 'auto',
+              }}>
+                {suggestions.map(s => (
+                  <li
+                    key={s.place_id}
+                    style={{ padding: '8px 16px', cursor: 'pointer', fontSize: '15px', color: '#222' }}
+                    onClick={() => {
+                      setSearchAddress(s.description);
+                      handleSearchAddress(s.description);
+                    }}
+                  >
+                    {s.description}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           <div 
             ref={mapContainerRef}
             style={{ 

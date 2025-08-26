@@ -14,11 +14,117 @@
   align-items: center;
   cursor: pointer;
   justify-content: space-between;
+  position: relative;
 
   @media screen and (min-width: 768px) {
-    min-width: 320px;
+    margin-top: 16px;
+  }
+
+  &__tooltip {
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 16px;
+    width: 16px;
+    background-color: white;
+    border: 1px black solid;
+    border-radius: 50%;
     display: flex;
     justify-content: center;
+    align-items: center;
+    color: black;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+      border: 2px black solid;
+    }
+
+    @media screen and (min-width: 768px) {
+      right: -20px;
+      top: 50%;
+    }
+  }
+
+  &__custom-tooltip {
+    position: absolute;
+    top: 52px;
+    right: -48px;
+    left: unset;
+    transform: none;
+    min-width: 270px;
+    background: white;
+    color: black;
+    border: 1px solid #222;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    padding: 16px 24px 16px 16px;
+    z-index: 9999;
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  &__custom-tooltip::after {
+    content: '';
+    position: absolute;
+    right: 24px;
+    top: -12px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 12px solid white;
+    /* Borde negro para el triángulo */
+    border-bottom-color: white;
+    z-index: 9999;
+    /* Truco para borde negro */
+  }
+  &__custom-tooltip::before {
+    content: '';
+    position: absolute;
+    right: 24px;
+    top: -14px;
+    width: 0;
+    height: 0;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    border-bottom: 14px solid #222;
+    z-index: 9998;
+  }
+
+  &__custom-tooltip-close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #222;
+    cursor: pointer;
+    background: none;
+    border: none;
+    z-index: 11;
+    line-height: 1;
+  }
+
+  &__custom-tooltip-text {
+    color: #222;
+    font-size: 15px;
+    margin-top: 8px;
+    margin-bottom: 4px;
+    font-family: $lato;
+  }
+
+  @media screen and (min-width: 768px) {
+    min-width: 280px;
+    display: flex;
+    justify-content: center;
+    margin-top: 0;
   }
 
   input {
