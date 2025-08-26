@@ -1,6 +1,7 @@
 import React from 'react'
 import { Input } from '../components/Input/Input'
 import { CustomSelect } from '../components/CustomSelect/CustomSelect'
+import { PhoneInput } from '../components/PhoneInput/PhoneInput'
 import { useFormContext } from 'react-hook-form'
 
 export const ContactoStep = ({ register }) => {
@@ -60,12 +61,9 @@ export const ContactoStep = ({ register }) => {
           </div>
           <div>
             <h2>Whatsapp <span style={{ fontWeight: 'normal' }}>(opcional)</span></h2>
-            <Input
-              placeholder="999999999"
-              register={register}
-              type="text"
+            <PhoneInput
               name="whatsapp"
-              maxLength="9"
+              register={register}
               error={errors.whatsapp}
               onBlur={() => handleBlur('whatsapp')}
               onChange={() => handleChange('whatsapp')}

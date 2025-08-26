@@ -1,6 +1,5 @@
 .input {
   border-radius: 8px;
-  max-width: 300px;
   overflow: hidden;
   height: 44px;
 }
@@ -36,6 +35,3 @@
     border: 1px solid #2abc05;
   }
 }
-.input--error {
-  border: 1px red solid !important;
-}/*# sourceMappingURL=Input.css.map */

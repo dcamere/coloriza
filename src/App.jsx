@@ -206,7 +206,7 @@ function AppContent() {
             <div className="header-wrapper">
               <div className="header-layout">
                 <div className="logo-section">
-                  <img src="/COLORIZA-TU-BARRIO.svg" alt="Coloriza Tu Barrio" className="header-logo" />
+                  <img src="/new-logo.svg" alt="Coloriza Tu Barrio" className="header-logo" />
                 </div>
                 <div className="step-container">
                   <Steps

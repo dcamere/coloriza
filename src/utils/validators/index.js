@@ -61,11 +61,11 @@ const validators = [
       .matches(emailRegex, 'Debe ser un email válido')
       .required('Este campo es requerido'),
     // Validaciones condicionales para campos opcionales
-    whatsapp: Yup.string()
-      .test('whatsapp-format', 'Debe ser un número válido (ej: 944444444)', function(value) {
-        if (!value || value.length === 0) return true; // Es opcional
-        return peruPhoneRegex.test(value);
-      }),
+    // whatsapp: Yup.string()
+    //   .test('whatsapp-format', 'Debe ser un número válido (ej: 944444444)', function(value) {
+    //     if (!value || value.length === 0) return true; // Es opcional
+    //     return peruPhoneRegex.test(value);
+    //   }),
   },
 ]
 

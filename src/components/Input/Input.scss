@@ -1,5 +1,17 @@
 @import '../../variables.scss';
 
+.phone-input-container.input--error {
+  border: 1px red solid !important;
+
+  ~.error-message {
+    display: block;
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+}
+
 .input {
   overflow: hidden;
   height: 46px;
@@ -43,7 +55,7 @@
 
     &.error {
       border: 1px solid #e74c3c;
-      
+
       &:active,
       &:focus {
         border: 1px solid #e74c3c;

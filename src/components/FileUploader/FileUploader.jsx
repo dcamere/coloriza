@@ -97,7 +97,7 @@ export const FileUploader = (props) => {
     const files = Array.from(event.target.files);
     const maxFiles = 2;
     const allowedTypes = [
-      'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/heic', 'application/pdf'
+      'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/heic', 'image/svg+xml', 'application/pdf'
     ];
     const maxSize = 10 * 1024 * 1024; // 10MB
 
