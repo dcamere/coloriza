@@ -30,6 +30,7 @@ $topSpace: 60px;
     right: 6px;
     top: 4px;
     z-index: 0;
+
     @media only screen and (min-width: 768px) {
       height: 6px;
       top: 9px;
@@ -56,6 +57,7 @@ $topSpace: 60px;
     flex: 1 1;
     color: #F1F1F1;
     z-index: 2;
+
     @media only screen and (min-width: 768px) {
       gap: 16px;
     }
@@ -63,6 +65,7 @@ $topSpace: 60px;
     span {
       max-height: 20px;
       overflow: hidden;
+
       @media only screen and (min-width: 375px) {
         max-height: inherit;
       }
@@ -93,6 +96,7 @@ $topSpace: 60px;
       transition: border 250ms 450ms ease-in-out,
         background-color 250ms 450ms ease-in-out;
       background-color: $gray;
+
       @media only screen and (min-width: 768px) {
         height: 24px;
         width: 24px;
@@ -107,6 +111,7 @@ $topSpace: 60px;
         content: '';
         border: 3px #fff solid;
         background-color: #fff;
+
         @media only screen and (min-width: 768px) {
           border-width: 5px;
         }
@@ -121,6 +126,7 @@ $topSpace: 60px;
         content: '';
         border: 3px #FFE500 solid;
         background-color: #2C2C2C;
+
         @media only screen and (min-width: 768px) {
           border-width: 5px;
         }
