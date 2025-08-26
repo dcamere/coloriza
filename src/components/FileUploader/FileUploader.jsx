@@ -2,11 +2,21 @@ import React, { useRef, useState, useEffect } from 'react'
 import './FileUploader.scss'
 import FileItem from './SingleFile'
 import { CgSoftwareUpload } from 'react-icons/cg'
+import { CiCamera } from "react-icons/ci";
 import { useFormContext } from 'react-hook-form'
 import { useFormPayload } from '../../contexts/FormContext'
 
 
 export const FileUploader = (props) => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 767);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   const { updatePayload } = useFormPayload()
   const methods = useFormContext()
   const formData = methods.getValues()
@@ -27,6 +37,7 @@ export const FileUploader = (props) => {
   const [hasInteracted, setHasInteracted] = useState(false) // Nuevo estado para trackear interacción
   const [showTooltip, setShowTooltip] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [showGlobalDrag, setShowGlobalDrag] = useState(false);
 
   // // Obtener errores de validación
   // const uploadError = methods.formState?.errors?.uploads?.message
@@ -35,31 +46,54 @@ export const FileUploader = (props) => {
   useEffect(() => {
     const syncFiles = async () => {
       const filesString = selectedFiles.length > 0 ? JSON.stringify(selectedFiles) : '';
-      console.log('Updating uploads field:', { selectedFiles: selectedFiles.length, filesString });
       setValue('uploads', filesString);
-      
       // Solo disparar validación si el usuario ya interactuó
       if (hasInteracted) {
-        const validationResult = await methods.trigger('uploads');
-        console.log('Validation result for uploads:', validationResult);
-        console.log('Form errors after validation:', methods.formState.errors);
+        await methods.trigger('uploads');
       }
-      
       updatePayload({
         uploads: selectedFiles
       });
     };
-    
     syncFiles();
-  }, [selectedFiles, hasInteracted]); // Agregar hasInteracted como dependencia
+  }, [selectedFiles, hasInteracted]);
 
   const handleUploadClick = () => {
     setHasInteracted(true); // Marcar interacción al hacer clic
     inputRef?.current?.click();
   };
+  // Global drag events
+  useEffect(() => {
+    let dragCounter = 0;
+    const handleDragEnter = (e) => {
+      if (e.dataTransfer && e.dataTransfer.types.includes('Files')) {
+        dragCounter++;
+        setShowGlobalDrag(true);
+      }
+    };
+    const handleDragLeave = (e) => {
+      dragCounter--;
+      if (dragCounter <= 0) {
+        setShowGlobalDrag(false);
+        dragCounter = 0;
+      }
+    };
+    const handleDropGlobal = (e) => {
+      setShowGlobalDrag(false);
+      dragCounter = 0;
+    };
+    window.addEventListener('dragenter', handleDragEnter);
+    window.addEventListener('dragleave', handleDragLeave);
+    window.addEventListener('drop', handleDropGlobal);
+    return () => {
+      window.removeEventListener('dragenter', handleDragEnter);
+      window.removeEventListener('dragleave', handleDragLeave);
+      window.removeEventListener('drop', handleDropGlobal);
+    };
+  }, []);
 
   const handleOnChange = async (event) => {
-  // setCustomError('');
+    // setCustomError('');
     const files = Array.from(event.target.files);
     const maxFiles = 2;
     const allowedTypes = [
@@ -94,6 +128,7 @@ export const FileUploader = (props) => {
     setIsAnyElementLoading(true);
     // Mostrar previews instantáneamente
     const newFiles = files.map(file => ({
+      id: `${file.name}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       name: file.name,
       loading: true,
       preview: allowedTypes.includes(file.type) && file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
@@ -111,15 +146,15 @@ export const FileUploader = (props) => {
           if (response) {
             setSelectedFiles((selectedFiles) => {
               return selectedFiles.map(item =>
-                item.name === response.name
-                  ? { ...response, preview: item.preview, loading: false, type: item.type }
+                item.name === response.name && item.loading
+                  ? { ...response, id: item.id, preview: item.preview, loading: false, type: item.type }
                   : item
               );
             });
           }
         } catch (error) {
           setSelectedFiles((selectedFiles) => {
-            return selectedFiles.filter((item) => item.name !== file.name);
+            return selectedFiles.filter((item) => item.id !== newFiles.find(f => f.name === file.name)?.id);
           });
           console.warn(error);
         }
@@ -155,6 +190,7 @@ export const FileUploader = (props) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
+    setShowGlobalDrag(false);
     if (e.dataTransfer && e.dataTransfer.files) {
       handleOnChange({ target: { files: e.dataTransfer.files } });
     }
@@ -164,42 +200,46 @@ export const FileUploader = (props) => {
   return (
     <>
       <div
-        className="uploader-container"
+        className={`uploader-container${showGlobalDrag ? ' uploader-container--dragging' : ''}`}
         style={{ position: 'relative' }}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
+        onClick={handleUploadClick}
       >
-        {isDragging && (
-          <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 0, left: 0, background: 'rgba(255,255,255,0.85)', zIndex: 100, pointerEvents: 'none', border: '3px dotted #d32f2f', boxSizing: 'border-box', borderRadius: '8px' }}>
-            <CgSoftwareUpload style={{ fontSize: '48px', color: '#d32f2f', marginBottom: '12px' }} />
-            <span style={{ fontSize: '18px', color: '#222' }}>Arrastra tus archivos aquí</span>
+        <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: 100, boxSizing: 'border-box', borderRadius: '8px' }}>
+          <div className="desktop">
+            <CgSoftwareUpload fontSize="36px" />
+            <span style={{ fontSize: '20px' }} className="desktop__title">Arrastra y suelta las imágenes aquí</span>
+            <span style={{ fontSize: '14px' }}>o también</span>
           </div>
-        )}
-        <h2>¿Tienes o conoces una pared donde podamos crear un mural increíble? <br /> Sube una o hasta dos fotos del espacio (pared/muro) para comenzar.</h2>
-        <div className="file-uploader" onClick={handleUploadClick}>
-          {text}
-          <CgSoftwareUpload />
-          <input
-            ref={inputRef}
-            type="file"
-            multiple
-            accept=".jpg,.jpeg,.png,.webp,.heic,.pdf"
-            onChange={(e) => typeof apiCall === 'function' && handleOnChange(e)}
-          />
-          <div className="file-uploader__tooltip" onClick={handleTooltip} title="Reglas de archivos a subir">i</div>
-          {showTooltip && (
-            <div className="file-uploader__custom-tooltip">
-              <span className="file-uploader__custom-tooltip-close" onClick={handleCloseTooltip}>×</span>
-              <div className="file-uploader__custom-tooltip-text">
-                <div>📌 Se pueden subir máximo 2 archivos.</div>
-                <div>📌 Formatos permitidos: JPG, JPEG, PNG, WebP, HEIC, PDF.</div>
-                <div>📌 Peso máximo por archivo: 10 MB.</div>
-                <div>📌 No hay peso mínimo.</div>
-                <div>📌 No es necesaria transformación ni resolución mínima (solo fotos de fachadas).</div>
+          <div className="mobile">
+            <p>¿Tienes o conoces una pared donde podamos crear un mural increíble? <br /> Sube una o hasta dos fotos del espacio (pared/muro) para comenzar.</p>
+          </div>
+          <div className="file-uploader">
+            {isMobile ? 'Subir imágenes' : text}
+            <CiCamera />
+            <input
+              ref={inputRef}
+              type="file"
+              multiple
+              accept=".jpg,.jpeg,.png,.webp,.heic,.pdf"
+              onChange={(e) => typeof apiCall === 'function' && handleOnChange(e)}
+            />
+            <div className="file-uploader__tooltip" onClick={handleTooltip} title="Reglas de archivos a subir">i</div>
+            {showTooltip && (
+              <div className="file-uploader__custom-tooltip">
+                <span className="file-uploader__custom-tooltip-close" onClick={handleCloseTooltip}>×</span>
+                <div className="file-uploader__custom-tooltip-text">
+                  <div>📌 Se pueden subir máximo 2 archivos.</div>
+                  <div>📌 Formatos permitidos: JPG, JPEG, PNG, WebP, HEIC, PDF.</div>
+                  <div>📌 Peso máximo por archivo: 10 MB.</div>
+                  <div>📌 No hay peso mínimo.</div>
+                  <div>📌 No es necesaria transformación ni resolución mínima (solo fotos de fachadas).</div>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
       {children && typeof children === 'function' ? children({ selectedFiles, setSelectedFiles }) : null}

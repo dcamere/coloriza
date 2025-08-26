@@ -11,14 +11,14 @@ export const FileItem = (props) => {
 
   const handleDelete = (name) => {
     setSelectedFiles((selectedFiles) => {
-      return selectedFiles.filter((item) => item.name !== name);
+      return selectedFiles.filter((item) => item.id !== name);
     });
   };
 
   return (
     <div className="file-list">
       {selectedFiles.map((file) => (
-        <div className="single-file" key={file.name}>
+        <div className="single-file" key={file.id}>
           {file.preview && (
             <img src={file.preview} alt={file.name} />
           )}
@@ -34,7 +34,7 @@ export const FileItem = (props) => {
           ) : (
             <div
               className="single-file__close"
-              onClick={() => handleDelete(file.name)}
+              onClick={() => handleDelete(file.id)}
             >
               <BsXLg />
             </div>

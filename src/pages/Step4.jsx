@@ -34,7 +34,7 @@ export const Step4 = ({
         <FileUploader
           setValue={setValue}
           apiCall={fileUploadFunction}
-          text="Subir imágenes"
+          text="Haz tus fotos"
           isAnyElementLoading={isAnyElementLoading}
           setIsAnyElementLoading={setIsAnyElementLoading}
           showToast={showToast}

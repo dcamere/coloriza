@@ -50,6 +50,7 @@ body,
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -67,16 +68,28 @@ body,
 
 .first-title {
   color: white;
-  margin-bottom: 36px;
   font-weight: bold;
   font-family: $jost;
   line-height: 130%;
   letter-spacing: 0;
   text-align: center;
   font-size: 16px;
+  margin-bottom: 14px;
 
   @media screen and (min-width: 768px) {
     font-size: 20px;
+  }
+}
+
+.first-subtitle {
+  display: none;
+
+  @media screen and (min-width: 768px) {
+    color: white;
+    text-align: center;
+    font-family: $nunito;
+    display: block;
+    margin-bottom: 36px;
   }
 }
 
@@ -99,7 +112,7 @@ body,
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 16px;
-  
+
   @media (min-width: 768px) {
     gap: 60px;
   }
@@ -115,13 +128,14 @@ body,
   justify-content: center;
   align-items: center;
   padding: 14px 0;
-  
+
   @media (max-width: 768px) {
     padding: 8px 4px;
   }
 
   img {
     max-height: 44px !important;
+
     @media (min-width: 768px) {
       min-height: 66px !important;
     }
@@ -134,7 +148,7 @@ body,
   width: auto;
   height: auto;
   object-fit: contain;
-  
+
   @media (max-width: 768px) {
     max-height: 35px;
   }
@@ -149,7 +163,7 @@ body,
   position: relative;
   background: transparent;
   color: #F1F1F1;
-  
+
   @media (max-width: 768px) {
     max-width: 60%;
     width: 100%;
@@ -160,19 +174,17 @@ body,
 }
 
 .uploader-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
   background-color: white;
   border-radius: 8px;
   width: 100%;
   padding: 24px;
-  margin-top: 13px;
-  @media (min-width: 768px) {
-      margin-top: 0;
-      flex-direction: row;
+  border: none;
+  box-sizing: border-box;
+  cursor: pointer;
+
+  @media screen and (min-width: 768px) {
+    outline: 3px $uploader-gray dotted;
+    outline-offset: -12px;
   }
 
   & h2 {
@@ -187,12 +199,51 @@ body,
       font-size: 13px;
     }
   }
+
+  // Opacidad visual cuando se draguea un archivo por la web
+  &--dragging {
+    transition: background-color 0.2s;
+    background-color: $bg-dragging;
+  }
+}
+
+.mobile {
+  p {
+    text-align: center;
+    font-family: $nunito;
+    font-weight: bold;
+    margin-bottom: 12px;
+    font-size: 12px;
+
+    @media screen and (min-width: 768px) {
+      display: none;
+    }
+  }
+}
+
+.desktop {
+  display: none !important;
+  color: $uploader-gray;
+  font-family: $jost;
+
+  &__title {
+    font-weight: 500;
+  }
+
+  @media screen and (min-width: 768px) {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 12px;
+  }
 }
 
 .form-container {
   .isWritten {
     border: 1px solid black;
   }
+
   background-color: white;
   flex-direction: column;
   display: flex;
@@ -205,6 +256,7 @@ body,
     font-family: $lato;
     font-weight: 600;
     font-size: 13px;
+
     @media (min-width: 450px) {
       font-size: 20px;
     }
@@ -217,6 +269,7 @@ body,
     border-radius: 8px;
     border: 1px solid $inputBorder;
     line-height: 24px;
+
     @media (min-width: 450px) {
       font-size: 20px;
     }
@@ -235,6 +288,7 @@ body,
   margin-top: 24px;
   width: 100%;
   gap: 10px;
+
   @media only screen and (min-width: 768px) {
     flex-direction: row;
     flex-wrap: wrap;
@@ -256,6 +310,7 @@ body,
 
 .main-container {
   margin: 0 auto;
+
   @media (min-width: 768px) {
     width: 100%;
     max-width: 784px;
@@ -279,31 +334,38 @@ body,
 .main-body {
   position: relative;
   z-index: 1000;
-  padding: 40px 0 120px 0 !important; /* Espacio para el footer en mobile */
+  padding: 40px 0 120px 0 !important;
+  /* Espacio para el footer en mobile */
   width: 90%;
-  
+
   @media (min-width: 768px) {
     overflow-y: auto;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    scrollbar-width: thin; /* Firefox */
-    scrollbar-color: #333 #eee; /* Firefox */
+    scrollbar-width: thin;
+    /* Firefox */
+    scrollbar-color: #333 #eee;
+    /* Firefox */
     margin-bottom: 80px;
-    padding: 40px 0 60px 0 !important; /* Remover padding en desktop, usar margin-bottom */
+    padding: 40px 0 60px 0 !important;
+    /* Remover padding en desktop, usar margin-bottom */
 
     &::-webkit-scrollbar {
-      width: 10px; /* WebKit */
+      width: 10px;
+      /* WebKit */
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: #333; /* WebKit */
+      background-color: #333;
+      /* WebKit */
       border-radius: 10px;
     }
 
     &::-webkit-scrollbar-track {
-      background-color: #eee; /* WebKit */
+      background-color: #eee;
+      /* WebKit */
     }
   }
 }
@@ -332,7 +394,7 @@ body,
   display: flex;
   flex-direction: column;
 
-  & > div {
+  &>div {
     margin-bottom: 24px;
 
     h2 {
@@ -349,7 +411,7 @@ body,
     flex-direction: row;
     gap: 32px;
 
-    & > div {
+    &>div {
       width: 50%;
     }
   }
@@ -366,6 +428,7 @@ body,
   max-width: 180px;
   height: auto;
   display: block;
+
   @media (min-width: 768px) {
     max-width: 300px;
   }
@@ -409,7 +472,7 @@ body,
     max-width: 18px;
     display: inline-block;
   }
-  
+
   span {
     width: 90%;
   }
@@ -427,7 +490,8 @@ body,
     }
   }
 
-  &--selected, &:hover {
+  &--selected,
+  &:hover {
     background-color: #FF8A00;
     color: white;
   }
@@ -441,5 +505,5 @@ body,
       width: 70%;
     }
   }
-  
+
 }

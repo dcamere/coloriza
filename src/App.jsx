@@ -37,7 +37,7 @@ function AppContent() {
   const methods = useForm({
     resolver: yupResolver(schema),
   })
-  
+
   const { control, setValue, register, formState, handleSubmit, getValues, watch } = methods
 
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -49,10 +49,10 @@ function AppContent() {
 
   // Observar cambios en el formulario y guardarlos en el payload
   const watchedValues = watch()
-  
+
   // Usar useMemo para evitar actualizaciones innecesarias
   const watchedValuesString = JSON.stringify(watchedValues)
-  
+
   useEffect(() => {
     // Actualizar el payload cada vez que cambien los valores del formulario
     if (Object.keys(watchedValues).length > 0) {
@@ -66,8 +66,8 @@ function AppContent() {
     let uploadedFiles = []
     if (currentPayload.uploads) {
       try {
-        uploadedFiles = typeof currentPayload.uploads === 'string' 
-          ? JSON.parse(currentPayload.uploads) 
+        uploadedFiles = typeof currentPayload.uploads === 'string'
+          ? JSON.parse(currentPayload.uploads)
           : currentPayload.uploads
       } catch (error) {
         console.warn('Error parsing uploads:', error)
@@ -87,21 +87,21 @@ function AppContent() {
       ancho: currentPayload.ancho || null,
       alto: currentPayload.alto || null,
       area: currentPayload.area || null,
-      
+
       // Ubicación (Step 2) - URL de Google Maps en lugar de coordenadas separadas
       ubicacionGoogleMaps: ubicacionGoogleMaps,
       direccionUsuario: currentPayload.direccionUsuario || '',
       porQueMejorar: currentPayload.porQueMejorar || '',
-      
+
       // Contacto (Step 3)
       nombreContacto: currentPayload.nombreContacto || '',
       comoEnteraste: currentPayload.comoEnteraste || '',
       whatsapp: currentPayload.whatsapp || '',
       email: currentPayload.email || '',
-      
+
       // Archivos subidos
       uploads: uploadedFiles,
-      
+
       // reCAPTCHA - asegurar que el token se incluya
       grecaptcha: token || currentPayload.grecaptcha || '',
     }
@@ -138,15 +138,15 @@ function AppContent() {
     // Actualizar el payload final con el token de reCAPTCHA
     const dataWithToken = { ...data, grecaptcha: token }
     updatePayload(dataWithToken)
-    
+
     // Obtener el payload estructurado para la API con el token incluido
     // Necesitamos pasar el token directamente para evitar problemas de timing
     const currentPayload = { ...payload, ...dataWithToken }
     const finalPayload = getPayloadForAPIWithToken(currentPayload, token)
-    
+
     try {
       const response = await UserRegister(finalPayload)
-      
+
       // Verificar si el status es 200 o 201 (éxito)
       if (response && (response.status === 200 || response.status === 201)) {
         setIsModalOpen(true)
@@ -221,7 +221,12 @@ function AppContent() {
               {
                 // Si es el primer step, en este caso "Muro"
                 currentStep === 0 &&
-                <h1 className="first-title">🎨 ¡Tu pared podría llenarse de arte!</h1>
+                <>
+                  <h1 className="first-title">🎨 ¡Tu pared podría llenarse de arte!</h1>
+                  <span className="first-subtitle">
+                    ¿Tienes o conoces una pared donde podamos crear un mural increíble? <br /> Sube una o hasta dos fotos del espacio (pared/muro) para comenzar.
+                  </span>
+                </>
               }
               {
                 <ActualStep
@@ -253,15 +258,15 @@ function AppContent() {
           }}
           lessPadding={true}
         >
-          <span style={{color: '#FF8A00', fontSize: '26px', marginTop: '10px'}} className="title">Datos enviados con éxito</span>
+          <span style={{ color: '#FF8A00', fontSize: '26px', marginTop: '10px' }} className="title">Datos enviados con éxito</span>
           <p>
             Gracias por querer mejorar tu barrio a través del arte urbano,  te contactaremos por correo y whatsapp.
           </p>
           <img src="/modal-success.png" alt="" />
-          <a style={{fontSize: '24px'}} className="button forward button-success" href="/">
+          <a style={{ fontSize: '24px' }} className="button forward button-success" href="/">
             Volver al inicio
           </a>
-          <a style={{fontSize: '24px'}} className="button forward button-success button-black" href="https://api.whatsapp.com/send?phone=+51991231559&text=Hola%20COLORIZA,%20%F0%9F%8E%A8%F0%9F%92%AA%F0%9F%8F%BB%F0%9F%98%80%F0%9F%96%8C%EF%B8%8F%20Quiero%20ser%20parte%20del%20proyecto%20Coloriza%20tu%20barrio%E2%80%A6%20" target="_blank">
+          <a style={{ fontSize: '24px' }} className="button forward button-success button-black" href="https://api.whatsapp.com/send?phone=+51991231559&text=Hola%20COLORIZA,%20%F0%9F%8E%A8%F0%9F%92%AA%F0%9F%8F%BB%F0%9F%98%80%F0%9F%96%8C%EF%B8%8F%20Quiero%20ser%20parte%20del%20proyecto%20Coloriza%20tu%20barrio%E2%80%A6%20" target="_blank">
             Escribir a WhatsApp
           </a>
         </Modal>
