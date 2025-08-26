@@ -95,7 +95,8 @@ $topSpace: 60px;
       border-radius: 50%;
       border: 3px $gray solid;
       transition: border 250ms 450ms ease-in-out,
-        background-color 250ms 450ms ease-in-out;
+        background-color 250ms 450ms ease-in-out,
+        background-image 250ms 450ms ease-in-out;
       background-color: $gray;
 
       @media only screen and (min-width: 768px) {
@@ -112,6 +113,15 @@ $topSpace: 60px;
         content: '';
         border: 3px #fff solid;
         background-color: #fff;
+        background-image: url("data:image/svg+xml;utf8,<svg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M3 6.5L5.5 9L9 4' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100% 100%;
+        opacity: 1;
+        transition: border 250ms 450ms ease-in-out,
+          background-color 250ms 450ms ease-in-out,
+          background-image 250ms 450ms ease-in-out,
+          opacity 250ms 450ms ease-in-out;
 
         @media only screen and (min-width: 768px) {
           border-width: 5px;
