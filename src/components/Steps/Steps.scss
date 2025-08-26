@@ -105,8 +105,8 @@ $topSpace: 60px;
 
       &::before {
         content: '';
-        border: 3px #FFE500 solid;
-        background-color: #2C2C2C;
+        border: 3px #fff solid;
+        background-color: #fff;
         @media only screen and (min-width: 768px) {
           border-width: 5px;
         }
