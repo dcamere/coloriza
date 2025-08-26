@@ -57,9 +57,10 @@ $topSpace: 60px;
     flex: 1 1;
     color: #F1F1F1;
     z-index: 2;
+    font-weight: normal !important;
 
     @media only screen and (min-width: 768px) {
-      gap: 16px;
+      gap: 8px;
     }
 
     span {
