@@ -217,7 +217,7 @@ export const FileUploader = (props) => {
             <p>¿Tienes o conoces una pared donde podamos crear un mural increíble? <br /> <span>Sube una o hasta dos fotos del espacio (pared/muro) para comenzar.</span></p>
           </div>
           <div className="file-uploader">
-            {isMobile ? 'Subir imágenes' : text}
+            {isMobile ? 'Haz tus fotos' : text}
             <CiCamera />
             <input
               ref={inputRef}
