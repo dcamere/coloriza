@@ -1,4 +1,6 @@
 import { React } from 'react'
+import * as Sentry from '@sentry/react';
+import { browserTracingIntegration } from '@sentry/browser';
 import './App.scss'
 import { useState, useEffect, useLayoutEffect } from 'react'
 
@@ -20,6 +22,14 @@ import { FormPayloadProvider, useFormPayload } from './contexts/FormContext'
 
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 import { RecaptchaV3 } from './components/RecaptchaV3/RecaptchaV3'
+
+// Inicializa Sentry al inicio de la app
+Sentry.init({
+  dsn: "https://19e6ac64d592493a28e8ce02994456dd@o4509914319290368.ingest.us.sentry.io/4509914325581824",
+  sendDefaultPii: true,
+  integrations: [browserTracingIntegration()],
+  tracesSampleRate: 1.0,
+});
 
 function AppContent() {
   // Permite mostrar el toast desde cualquier paso
@@ -160,6 +170,7 @@ function AppContent() {
         })
       }
     } catch (error) {
+      Sentry.captureException(error);
       console.error('Error en API:', error)
       setToastConfig({
         isOpen: true,

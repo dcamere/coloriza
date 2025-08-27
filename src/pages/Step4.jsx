@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react';
 import FileItem from '../components/FileUploader/SingleFile'
 import { FileUploader } from '../components/FileUploader/FileUploader'
 import { Medidas } from '../components/Medidas/Medidas'
@@ -5,20 +6,21 @@ import { ENV_VARS } from '../utils/constants/index'
 import { useFormContext } from 'react-hook-form'
 
 const fileUploadFunction = async (payload) => {
-  if (!payload) return
-
-  const response = await fetch(`${ENV_VARS.URL_PATH}/upload/pictures`, {
-    method: 'POST',
-    body: payload,
-  }).then((response) => {
+  if (!payload) return;
+  try {
+    const response = await fetch(`${ENV_VARS.URL_PATH}/upload/pictures`, {
+      method: 'POST',
+      body: payload,
+    });
     if (response.ok) {
-      return response.json()
+      return response.json();
     } else {
-      throw new Error('Error in fetch request')
+      throw new Error('Error in fetch request');
     }
-  })
-
-  return response
+  } catch (error) {
+    Sentry.captureException(error);
+    throw error;
+  }
 }
 
 export const Step4 = ({
@@ -28,6 +30,7 @@ export const Step4 = ({
   setIsAnyElementLoading,
   showToast,
 }) => {
+  // Si tienes una función de envío de formulario, aplica try/catch y Sentry.captureException allí también
   return (
     <>
       <div className="main-container">
